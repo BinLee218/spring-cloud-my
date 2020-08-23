@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: single-consumer
+#  cloud:
+#    loadbalancer:
+#      retry:
+#        enabled: true
+server:
+  port: 9091
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/,http://libin1:8762/eureka/,http://libin:8763/eureka/
+
+#配置超时重试，要首先把feign的超时重试配置给注释掉
+ribbon:
+  ReadTimeout: 1000
+  ConnectTimeout: 1000
+  MaxAutoRetries: 1 #同一台实例最大重试次数,不包括首次调用
+  MaxAutoRetriesNextServer: 1 #重试负载均衡其他的实例最大重试次数,不包括首次调用
+    #是否所有操作都重试, 当OkToRetryOnAllOperations设置为false时，只会对get请求进行重试。
+    #如果设置为true，便会对所有的请求进行重试，如果是put或post等写操作，如果服务器接口没做幂等性，会产生不好的结果，
+    #默认情况下,GET方式请求无论是连接异常还是读取异常,都会进行重试 ,非GET方式请求,只有连接异常时,才会进行重试
+  OkToRetryOnAllOperations: false

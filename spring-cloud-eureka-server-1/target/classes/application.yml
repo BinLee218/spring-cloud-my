@@ -1,0 +1,11 @@
+server:
+  port: 8762
+
+eureka:
+  instance:
+    hostname: libin1
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/,http://libin:8763/eureka/

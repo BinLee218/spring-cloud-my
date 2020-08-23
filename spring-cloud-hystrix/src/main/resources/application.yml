@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: hystrix-provider
+server:
+  port: 9094
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/,http://libin1:8762/eureka/,http://libin:8763/eureka/
