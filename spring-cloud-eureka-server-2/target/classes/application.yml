@@ -1,5 +1,5 @@
 server:
-  port: 8763
+  port: 8762
 
 eureka:
   instance:
@@ -8,4 +8,4 @@ eureka:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/,http://libin1:8762/eureka/
+      defaultZone: http://localhost:8761/eureka/,http://localhost:8763/eureka/

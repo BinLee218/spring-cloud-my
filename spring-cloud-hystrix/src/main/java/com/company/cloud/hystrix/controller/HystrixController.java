@@ -1,6 +1,5 @@
 package com.company.cloud.hystrix.controller;
 
-import com.apple.eawt.AppEvent;
 import com.company.cloud.hystrix.controller.response.ApiResponse;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
@@ -9,13 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.sound.midi.Soundbank;
-import javax.ws.rs.POST;
 
 /**
  * @author bin.li

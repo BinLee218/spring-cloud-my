@@ -1,8 +1,8 @@
 spring:
   application:
-    name: hystrix-provider
+    name: inner-provider
 server:
-  port: 9095
+  port: 9090
 
 eureka:
   client:

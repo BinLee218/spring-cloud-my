@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>pom</packaging>
 	<modules>
-		<module>spring-cloud-eureka-server</module>
-		<module>spring-cloud-eureka-provider</module>
-        <module>spring-cloud-eureka-consumer</module>
+		<module>spring-cloud-eureka-consumer</module>
 		<module>spring-cloud-eureka-server-1</module>
 		<module>spring-cloud-eureka-server-2</module>
-		<module>spring-cloud-eureka-provider-1</module>
+		<module>spring-cloud-eureka-server-3</module>
+		<module>spring-cloud-eureka-provider-inner</module>
+		<module>spring-cloud-eureka-provider-outside</module>
 		<module>spring-cloud-hystrix</module>
 		<module>spring-cloud-hystrix-1</module>
 		<module>spring-cloud-zuul</module>
