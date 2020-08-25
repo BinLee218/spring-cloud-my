@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: zuul-provider
+server:
+  port: 9096
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/,http://libin1:8762/eureka/,http://libin:8763/eureka/
