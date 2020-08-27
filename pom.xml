@@ -13,7 +13,8 @@
 		<module>spring-cloud-hystrix</module>
 		<module>spring-cloud-hystrix-1</module>
 		<module>spring-cloud-zuul</module>
-	</modules>
+        <module>test</module>
+    </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>

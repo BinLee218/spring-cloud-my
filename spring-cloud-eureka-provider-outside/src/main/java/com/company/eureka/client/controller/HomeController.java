@@ -22,7 +22,13 @@ public class HomeController {
 
     @RequestMapping(value = "/home")
     public String home(){
-        log.info(client.toString());
+        log.info("我是/home");
+        return client.toString();
+    }
+
+    @RequestMapping(value = "/api/home")
+    public String apihome(){
+        log.info("我是/api/home");
         return client.toString();
     }
 
@@ -31,5 +37,19 @@ public class HomeController {
     public String getUserName(@RequestBody UserRequest userRequest){
         log.info("我是client1");
         return "用户名："+userRequest.getName();
+    }
+
+    @RequestMapping(value = "/timeout")
+    public String timeout() throws InterruptedException {
+        log.info("我是=timeout");
+        Thread.sleep(10000);
+        return client.toString();
+    }
+
+    @RequestMapping(value = "/throwException")
+    public String throwException(){
+        log.info("我是=timeout");
+        int i = 1/0;
+        return client.toString();
     }
 }

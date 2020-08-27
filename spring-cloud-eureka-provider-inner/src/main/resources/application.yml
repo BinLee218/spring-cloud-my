@@ -1,6 +1,6 @@
 spring:
   application:
-    name: inner-provider
+    name: erueka-provider-inner
 server:
   port: 9090
 

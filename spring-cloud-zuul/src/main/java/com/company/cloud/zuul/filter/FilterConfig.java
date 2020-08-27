@@ -22,4 +22,12 @@ public class FilterConfig {
     public JwtPostFilter jwtPostFilter(){
         return new JwtPostFilter();
     }
+    @Bean
+    public JwtRouteFilter jwtRouteFilter(){
+        return new JwtRouteFilter();
+    }
+    @Bean
+    public GlobalErrorFilter globalErrorFilter(){
+        return new GlobalErrorFilter();
+    }
 }
