@@ -1,6 +1,5 @@
 package com.company.cloud.zuul.filter;
 
-import jdk.nashorn.internal.ir.CaseNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.netflix.zuul.filters.route.FallbackProvider;
 import org.springframework.http.HttpHeaders;

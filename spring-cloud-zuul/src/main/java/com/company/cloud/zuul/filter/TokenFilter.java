@@ -6,7 +6,6 @@ import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
-import org.springframework.context.annotation.Bean;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
