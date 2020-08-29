@@ -20,12 +20,11 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 
 @Slf4j
-public class MyApplication {
+public class ZuulTest {
 
 	public static void main(String[] args) throws InterruptedException {
 
@@ -37,7 +36,9 @@ public class MyApplication {
 		}
 
 //		test1();
-		test2();
+		for (int i = 0; i < 1; i++) {
+			test2();
+		}
 	}
 
 	private static void test2() throws InterruptedException {
@@ -70,7 +71,7 @@ public class MyApplication {
 				}
 			});
 		}
-		Thread.sleep(5000);
+		Thread.sleep(3000);
 		countDownLatch.countDown();
 		threadPoolExecutor.shutdown();
 	}

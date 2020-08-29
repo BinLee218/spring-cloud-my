@@ -45,19 +45,27 @@ zuul:
 #        quota: 1 #可选-  每个刷新时间窗口对应的请求时间限制（秒）
         refresh-interval: 2 # 刷新时间窗口的时间，默认值 (秒)
         type:  #可选 限流方式
-          - url
-#           - url
-#          - httpmethod
-#          - origin
-    policy: #可选 - 针对所有的路由配置的策略，除非特别配置了policies
-      token: #特定的路由
-        limit: 1 #可选 - 每个刷新时间窗口对应的请求数量限制
-        quota: 1 #可选-  每个刷新时间窗口对应的请求时间限制（秒）
-        refresh-interval: 2 # 刷新时间窗口的时间，默认值 (秒)
-        type: url #可选 限流方式
 #          - url
 #          - httpmethod
 #          - origin
+    policy-list:
+      erueka-provider-inner: #这个是zuul-route配置，指定是什么服务
+        - limit: 5 #optional - request number limit per refresh interval window
+#          quota: 1000 #optional - request time limit per refresh interval window (in seconds)
+          refresh-interval: 2 #default value (in seconds)
+          type: #optional
+            - user
+            - origin
+            - url
+#        - type: #optional value for each type
+#            - user=anonymous
+#            - origin=somemachine.com
+#            - url=/api #url prefix
+#            - role=user
+#            - http_method=get #case insensitive
+#            - http_header=customHeader
+#        - type:
+#            - url_pattern=/api/*/payment
 
 #hystrix的全局超时时间，有可能是服务挂掉、出错或者超时，会走全局的FallbackProvider，
 hystrix:
