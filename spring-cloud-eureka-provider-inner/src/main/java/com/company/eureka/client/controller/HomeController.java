@@ -48,7 +48,7 @@ public class HomeController {
 
     @RequestMapping(value = "/throwException")
     public String throwException(){
-        log.info("我是=timeout");
+        log.info("我是=throwException");
         int i = 1/0;
         return client.toString();
     }
