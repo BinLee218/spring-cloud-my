@@ -2,8 +2,30 @@ spring:
   application:
     name: zuul-provider
   redis:
+    database: 0
     host: 127.0.0.1
+    jedis:
+      pool:
+        #最大连接数据库连接数,设 0 为没有限制
+        max-active: 8
+        #最大等待连接中的数量,设 0 为没有限制
+        max-idle: 8
+        #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+        max-wait: -1ms
+        #最小等待连接中的数量,设 0 为没有限制
+        min-idle: 0
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+      shutdown-timeout: 100ms
+    password:
     port: 6379
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
 server:
   port: 9096
 
@@ -38,7 +60,7 @@ zuul:
   # 限流
   ratelimit:
     enabled: true
-    repository: redis  #对应存储类型（用来存储统计信息）
+    repository: REDIS  #对应存储类型（用来存储统计信息）
     behind-proxy: true  #代理之后
     default-policy-list: #可选 - 针对所有的路由配置的策略，除非特别配置了policies
       - limit: 2 #可选 - 每个刷新时间窗口对应的请求数量限制

@@ -92,7 +92,39 @@ public class HystrixController {
         return apiResponse;
     }
 
+    /**
+     * 线程池-降级，核心线程2个，队列2个，
+     * 调用方起10个线程，4个线程会通过，6个线程会走降级策略
+     * @param id
+     * @return
+     * @throws InterruptedException
+     */
+    @RequestMapping(value = "/threadPool/{id}")
+    @HystrixCommand(fallbackMethod = "fallback1",
+            ignoreExceptions = {NullPointerException.class},
+            commandProperties = {
+                    @HystrixProperty(name = "execution.isolation.strategy", value = "THREAD"),//（执行的隔离策略）
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000"),
+                    @HystrixProperty(name = "circuitBreaker.enabled", value = "true"),//（断路器开关）
+                    @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")//（断路器请求阈值）
+            },
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "2"),
+                    @HystrixProperty(name = "maxQueueSize", value = "2")
+            }
+    )
+    public ApiResponse<String> threadPoolTest(@PathVariable Integer id) throws InterruptedException {
+        ApiResponse<String> apiResponse = new ApiResponse<>();
+        Thread.sleep(3000);
+        System.out.println("hello " + id);
+        apiResponse.setCode(200);
+        apiResponse.setMessage("success");
+        apiResponse.setDate("hello " + id);
+        return apiResponse;
+    }
+
     public ApiResponse<String> fallback1(Integer id) {
+        System.out.println("something is wrong，this is fallback-1: " + id);
         ApiResponse<String> apiResponse = new ApiResponse<>();
         apiResponse.setCode(4000);
         apiResponse.setMessage("success");
