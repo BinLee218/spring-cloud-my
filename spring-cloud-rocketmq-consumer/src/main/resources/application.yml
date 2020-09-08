@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: rocketmq-provider
+server:
+  port: 9098
+rocketmq:
+  name-server: localhost:9876
+  producer:
+    group: test01

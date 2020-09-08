@@ -17,7 +17,9 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
-        <datasource-mapping />
+        <datasource-mapping>
+          <factory-entry name="Entities" />
+        </datasource-mapping>
         <naming-strategy-map />
       </configuration>
     </facet>
@@ -226,8 +228,5 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.2.8.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:5.2.8.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.xmlunit:xmlunit-core:2.7.0" level="project" />
-    <orderEntry type="library" name="Maven: com.marcosbarbero.cloud:spring-cloud-zuul-ratelimit:2.4.1.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: com.marcosbarbero.cloud:spring-cloud-zuul-ratelimit-core:2.4.1.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: commons-net:commons-net:3.6" level="project" />
   </component>
 </module>
