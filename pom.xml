@@ -17,6 +17,7 @@
         <module>spring-cloud-rocketmq-provider</module>
         <module>spring-cloud-rocketmq-consumer</module>
         <module>spring-cloud-rocketmq-consumer-1</module>
+        <module>spring-cloud-redisson</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
