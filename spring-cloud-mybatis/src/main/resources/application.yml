@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: redisson-project
+  redis:
+    port: 6379
+    host: 127.0.0.1
+    timeout: 4000
+    database: 0
+  datasource:
+    druid:
+      one:
+        url: jdbc:mysql://localhost:3306/bookstore?useUnicode=true&characterEncoding=utf8
+        username: root
+        password: 123china.com
+        driver-class-name: com.mysql.jdbc.Driver
+        initialSize: 5
+        minIdle: 5
+        maxActive: 20
+        maxWait: 60000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1 FROM DUAL
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        filters: wall,slf4j,log4j2
+#        filter:
+#          slf4j:
+#            enabled: true
+#            statement-create-after-log-enabled: false
+#            statement-log-enabled: false
+#            statement-executable-sql-log-enable: true
+#            statement-log-error-enabled: true
+#            result-set-log-enabled: false
+        name: localhost_data_source_master
+      two:
+        url: jdbc:mysql://localhost:3306/bookstore_slave?useUnicode=true&characterEncoding=utf8
+        username: root
+        password: 123china.com
+        driver-class-name: com.mysql.jdbc.Driver
+        initialSize: 5
+        minIdle: 5
+        maxActive: 20
+        maxWait: 60000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1 FROM DUAL
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        filters: wall,slf4j,log4j2
+#        filter:
+#          slf4j:
+#            enabled: true
+#            statement-create-after-log-enabled: false
+#            statement-log-enabled: false
+#            statement-executable-sql-log-enable: true
+#            statement-log-error-enabled: true
+#            result-set-log-enabled: false
+        name: localhost_data_source_slave
+
+logging:
+  level:
+    druid:
+      sql:
+        Statement: debug
+server:
+  port: 9102
