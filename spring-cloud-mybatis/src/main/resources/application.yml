@@ -11,7 +11,7 @@ spring:
       one:
         url: jdbc:mysql://localhost:3306/bookstore?useUnicode=true&characterEncoding=utf8
         username: root
-        password: 123china.com
+        password: root123
         driver-class-name: com.mysql.jdbc.Driver
         initialSize: 5
         minIdle: 5
@@ -36,7 +36,7 @@ spring:
       two:
         url: jdbc:mysql://localhost:3306/bookstore_slave?useUnicode=true&characterEncoding=utf8
         username: root
-        password: 123china.com
+        password: root123
         driver-class-name: com.mysql.jdbc.Driver
         initialSize: 5
         minIdle: 5
