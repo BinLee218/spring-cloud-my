@@ -44,3 +44,5 @@ Zuul是一种网关服务，提供动态路由、监视、弹性、安全性等�
 ### redis-Redisson
 新增了redis的Redisson的配置和操作   
 操作就是一些基本数据结构操作，还有是分布式锁的调试   
+### 增加了mybatis-mysql的多数据源
+增加了mybatis-mysql的多数据源   
