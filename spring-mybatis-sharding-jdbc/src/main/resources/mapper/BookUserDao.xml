@@ -40,9 +40,12 @@
       #{userEmail,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{systemUser,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.company.sharding.pojo.BookUser" useGeneratedKeys="true">
+  <insert id="insertSelective" parameterType="com.company.sharding.pojo.BookUser" >
     insert into book_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="userName != null">
         user_name,
       </if>
@@ -69,6 +72,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
       <if test="userName != null">
         #{userName,jdbcType=VARCHAR},
       </if>

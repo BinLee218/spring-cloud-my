@@ -30,16 +30,28 @@ public class ShardingTest {
 
     @Test
     public void TestBookInfo() {
-        BookInfo bookInfo = BookInfo.builder()
+        BookInfo bookInfo0 = BookInfo.builder()
                 .bookName("Java编程思想111")
                 .bookAuthor("作者111")
-//                .bookDesc("描述111")
+                .bookDesc("描述111")
                 .bookNum(1001)
                 .bookPrice(new BigDecimal("100.1"))
                 .bookType(0)
                 .onLine(1)
                 .build();
-        bookInfoService.save(bookInfo);
+        bookInfoService.save(bookInfo0);
+
+        BookInfo bookInfo1 = BookInfo.builder()
+                .bookName("Java编程思想111")
+                .bookAuthor("作者111")
+                .bookDesc("描述111")
+                .bookNum(1001)
+                .bookPrice(new BigDecimal("100.1"))
+                .bookType(1)
+                .onLine(1)
+                .build();
+        bookInfoService.save(bookInfo1);
+
     }
 
     @Test
@@ -50,7 +62,29 @@ public class ShardingTest {
 
     @Test
     public void TestBookUser() {
-        BookUser bookUser = BookUser
+        BookUser bookUser0 = BookUser
+                .builder()
+                .userName("userName")
+                .userLoginName("loginName")
+                .salt("slat")
+                .userPassword("password")
+                .userEmail("email")
+                .systemUser(0)
+                .build();
+        bookUserService.save(bookUser0);
+
+        BookUser bookUser1 = BookUser
+                .builder()
+                .userName("userName")
+                .userLoginName("loginName")
+                .salt("slat")
+                .userPassword("password")
+                .userEmail("email")
+                .systemUser(1)
+                .build();
+        bookUserService.save(bookUser1);
+
+        BookUser bookUser2 = BookUser
                 .builder()
                 .userName("userName")
                 .userLoginName("loginName")
@@ -59,6 +93,17 @@ public class ShardingTest {
                 .userEmail("email")
                 .systemUser(2)
                 .build();
-        bookUserService.save(bookUser);
+        bookUserService.save(bookUser2);
+
+        BookUser bookUser3 = BookUser
+                .builder()
+                .userName("userName")
+                .userLoginName("loginName")
+                .salt("slat")
+                .userPassword("password")
+                .userEmail("email")
+                .systemUser(3)
+                .build();
+        bookUserService.save(bookUser3);
     }
 }
