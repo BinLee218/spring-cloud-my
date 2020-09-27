@@ -19,6 +19,7 @@
         <module>spring-cloud-rocketmq-consumer-1</module>
         <module>spring-cloud-redisson</module>
         <module>spring-cloud-mybatis</module>
+        <module>spring-mybatis-sharding-jdbc</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -85,7 +86,6 @@
                 <version>1.2.3</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -113,6 +113,12 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>1.1.23</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+<!--                <version>4.0.0-RC2</version>-->
+                <version>4.1.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

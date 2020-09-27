@@ -6,7 +6,8 @@
 * Spring cloud hystrix
 * Spring cloud zuul
 * Rocketmq   
-* Redis-Redisson   
+* Redis-Redisson  
+* Spring-Mybatis 
 ### eureka
 服务注册与发现  
 首先需要启动服务的注册中心，我这里有三个，分别是eureka-server-1、eureka-server-2、eureka-server-3  
@@ -41,8 +42,10 @@ Zuul是一种网关服务，提供动态路由、监视、弹性、安全性等�
 还有zuul限流配置，超时的配置等。
 ### rocketmq
 新增了rocketmq消息发送与处理逻辑
-### redis-Redisson
-新增了redis的Redisson的配置和操作   
+### redis-Redisson新增了redis的Redisson的配置和操作   
+
 操作就是一些基本数据结构操作，还有是分布式锁的调试   
 ### 增加了mybatis-mysql的多数据源
 增加了mybatis-mysql的多数据源   
+### shardingsphere-jdbc
+增加shardingsphere，分库，分表的操作的配置   

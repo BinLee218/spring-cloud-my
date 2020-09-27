@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.company.mybatis.dao.master.BookUserDao">
-  <resultMap id="BaseResultMap" type="com.company.mybatis.pojo.BookUser">
+<mapper namespace="com.company.sharding.dao.BookUserDao">
+  <resultMap id="BaseResultMap" type="com.company.sharding.pojo.BookUser">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="user_login_name" jdbcType="VARCHAR" property="userLoginName" />
@@ -32,7 +32,7 @@
     delete from book_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.company.mybatis.pojo.BookUser" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.company.sharding.pojo.BookUser" useGeneratedKeys="true">
     insert into book_user (user_name, user_login_name, user_password, 
       user_email, salt, create_time, 
       update_time, `system_user`)
@@ -40,7 +40,7 @@
       #{userEmail,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{systemUser,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.company.mybatis.pojo.BookUser" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.company.sharding.pojo.BookUser" useGeneratedKeys="true">
     insert into book_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userName != null">
@@ -95,7 +95,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.mybatis.pojo.BookUser">
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.sharding.pojo.BookUser">
     update book_user
     <set>
       <if test="userName != null">
@@ -125,7 +125,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.mybatis.pojo.BookUser">
+  <update id="updateByPrimaryKey" parameterType="com.company.sharding.pojo.BookUser">
     update book_user
     set user_name = #{userName,jdbcType=VARCHAR},
       user_login_name = #{userLoginName,jdbcType=VARCHAR},
