@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author bin.li
@@ -29,7 +30,7 @@ public class ShardingTest {
     private BookUserService bookUserService;
 
     @Test
-    public void TestBookInfo() {
+    public void testBookInfo() {
         BookInfo bookInfo0 = BookInfo.builder()
                 .bookName("Java编程思想111")
                 .bookAuthor("作者111")
@@ -55,13 +56,13 @@ public class ShardingTest {
     }
 
     @Test
-    public void TestBookInfoGet() {
+    public void testBookInfoGet() {
         BookInfo bookInfo = bookInfoService.selectBookInfoByIdAndType(16, 1);
         System.out.println(bookInfo.toString());
     }
 
     @Test
-    public void TestBookUser() {
+    public void testBookUser() {
         BookUser bookUser0 = BookUser
                 .builder()
                 .userName("userName")
@@ -105,5 +106,28 @@ public class ShardingTest {
                 .systemUser(3)
                 .build();
         bookUserService.save(bookUser3);
+    }
+
+
+    @Test
+    public void testSelectBookUser(){
+        List<BookUser> bookUsers = bookUserService.selectBookUser(9);
+        for (BookUser bookUser : bookUsers) {
+            System.out.println(bookUser.toString());
+        }
+    }
+    @Test
+    public void testSelectBookUser1(){
+        List<BookUser> bookUsers = bookUserService.selectBookUser1(517036964013146112L);
+        for (BookUser bookUser : bookUsers) {
+            System.out.println(bookUser.toString());
+        }
+    }
+    @Test
+    public void testSelectBookUser2(){
+        List<BookUser> bookUsers = bookUserService.selectBookUser2(9);
+        for (BookUser bookUser : bookUsers) {
+            System.out.println(bookUser.toString());
+        }
     }
 }

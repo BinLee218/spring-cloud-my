@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.company.sharding.dao.BookUserDao">
-  <resultMap id="BaseResultMap" type="com.company.sharding.pojo.BookUser">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="user_login_name" jdbcType="VARCHAR" property="userLoginName" />
-    <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
-    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
-    <result column="salt" jdbcType="VARCHAR" property="salt" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="system_user" jdbcType="INTEGER" property="systemUser" />
-  </resultMap>
-  <cache type="org.apache.ibatis.cache.impl.PerpetualCache"
-         size="1024"
-         eviction="LRU"
-         flushInterval="120000"
-         readOnly="false"/>
+    <resultMap id="BaseResultMap" type="com.company.sharding.pojo.BookUser">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_login_name" jdbcType="VARCHAR" property="userLoginName"/>
+        <result column="user_password" jdbcType="VARCHAR" property="userPassword"/>
+        <result column="user_email" jdbcType="VARCHAR" property="userEmail"/>
+        <result column="salt" jdbcType="VARCHAR" property="salt"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="system_user" jdbcType="INTEGER" property="systemUser"/>
+    </resultMap>
+    <cache type="org.apache.ibatis.cache.impl.PerpetualCache"
+           size="1024"
+           eviction="LRU"
+           flushInterval="120000"
+           readOnly="false"/>
 
-  <sql id="Base_Column_List">
+    <sql id="Base_Column_List">
     id, user_name, user_login_name, user_password, user_email, salt, create_time, update_time, 
     `system_user`
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from book_user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from book_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from book_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.company.sharding.pojo.BookUser" useGeneratedKeys="true">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.company.sharding.pojo.BookUser"
+            useGeneratedKeys="true">
     insert into book_user (user_name, user_login_name, user_password, 
       user_email, salt, create_time, 
       update_time, `system_user`)
@@ -40,98 +41,98 @@
       #{userEmail,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{systemUser,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.company.sharding.pojo.BookUser" >
-    insert into book_user
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="userName != null">
-        user_name,
-      </if>
-      <if test="userLoginName != null">
-        user_login_name,
-      </if>
-      <if test="userPassword != null">
-        user_password,
-      </if>
-      <if test="userEmail != null">
-        user_email,
-      </if>
-      <if test="salt != null">
-        salt,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="systemUser != null">
-        `system_user`,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="userLoginName != null">
-        #{userLoginName,jdbcType=VARCHAR},
-      </if>
-      <if test="userPassword != null">
-        #{userPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="userEmail != null">
-        #{userEmail,jdbcType=VARCHAR},
-      </if>
-      <if test="salt != null">
-        #{salt,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="systemUser != null">
-        #{systemUser,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.company.sharding.pojo.BookUser">
-    update book_user
-    <set>
-      <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="userLoginName != null">
-        user_login_name = #{userLoginName,jdbcType=VARCHAR},
-      </if>
-      <if test="userPassword != null">
-        user_password = #{userPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="userEmail != null">
-        user_email = #{userEmail,jdbcType=VARCHAR},
-      </if>
-      <if test="salt != null">
-        salt = #{salt,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="systemUser != null">
-        `system_user` = #{systemUser,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.sharding.pojo.BookUser">
+    <insert id="insertSelective" parameterType="com.company.sharding.pojo.BookUser">
+        insert into book_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="userLoginName != null">
+                user_login_name,
+            </if>
+            <if test="userPassword != null">
+                user_password,
+            </if>
+            <if test="userEmail != null">
+                user_email,
+            </if>
+            <if test="salt != null">
+                salt,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="systemUser != null">
+                `system_user`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userLoginName != null">
+                #{userLoginName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null">
+                #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                #{userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="systemUser != null">
+                #{systemUser,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.company.sharding.pojo.BookUser">
+        update book_user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userLoginName != null">
+                user_login_name = #{userLoginName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null">
+                user_password = #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                user_email = #{userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="systemUser != null">
+                `system_user` = #{systemUser,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.company.sharding.pojo.BookUser">
     update book_user
     set user_name = #{userName,jdbcType=VARCHAR},
       user_login_name = #{userLoginName,jdbcType=VARCHAR},
@@ -143,4 +144,39 @@
       `system_user` = #{systemUser,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <select id="selectBookUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from book_user
+        where
+        user_name = (
+        -- 这里加上了book_type的逻辑，book_info分库逻辑并没有生效，
+        select book_author from book_info where id = #{infoId,jdbcType=INTEGER}
+        )
+        -- 如果加上了规则的话，会查询单独的表，如果没有加的话，会查询所有的分表并汇总
+        -- and `system_user` = 0
+    </select>
+
+    <select id="selectBookUser1" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from book_user
+        where
+        user_name = (
+        -- 经过证明，这种查询，下面的sql语句是不会有分表操作的，只有外层的才会去做查询。
+        select user_name from book_user where id = #{infoId,jdbcType=BIGINT} and `system_user` = 0
+        )
+        -- 如果加上了规则的话，会查询单独的表，如果没有加的话，会查询所有的分表并汇总
+        -- and `system_user` = 0
+    </select>
+
+    <select id="selectBookUser2" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+-- book_type=0能正确执行，但是book_type=1的话就会报错，暂时还不清楚问题所在，后面分析代码再说
+    select
+    b.id, b.user_name, b.user_login_name, b.user_password, b.user_email, b.salt
+    from book_user b left join book_info b1 on b.user_name = b1.book_author where b1.id = #{infoId,jdbcType=INTEGER}
+--     and b.`system_user` = 0
+    and b1.book_type = 0
+  </select>
 </mapper>
