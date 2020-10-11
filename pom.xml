@@ -13,13 +13,13 @@
         <module>spring-cloud-hystrix</module>
         <module>spring-cloud-hystrix-1</module>
         <module>spring-cloud-zuul</module>
-        <module>test</module>
         <module>spring-cloud-rocketmq-provider</module>
         <module>spring-cloud-rocketmq-consumer</module>
         <module>spring-cloud-rocketmq-consumer-1</module>
         <module>spring-cloud-redisson</module>
         <module>spring-cloud-mybatis</module>
         <module>spring-mybatis-sharding-jdbc</module>
+        <module>vue-web-api</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -120,6 +120,31 @@
                 <!--                <version>4.0.0-RC2</version>-->
                 <version>4.1.1</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/commons-collections/commons-collections -->
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>3.2.2</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>2.0.1.Final</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.redisson/redisson-spring-boot-starter -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>3.13.4</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.crazycake/shiro-redis -->
+            <dependency>
+                <groupId>org.crazycake</groupId>
+                <artifactId>shiro-redis</artifactId>
+                <version>3.3.1</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
