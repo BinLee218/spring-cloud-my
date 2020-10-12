@@ -1,4 +1,4 @@
-package com.company.mybatis.shiro;
+package com.company.mybatis.shiro.credentials;
 
 import com.company.mybatis.pojo.User;
 import com.company.mybatis.service.AuthService;

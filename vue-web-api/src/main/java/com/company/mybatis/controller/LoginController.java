@@ -7,6 +7,7 @@ import com.company.mybatis.service.UserService;
 import com.company.mybatis.shiro.model.LoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +34,11 @@ public class LoginController {
     @PostMapping(value = "/auth/login")
     public ResponseEntity<LoginResponse> login(@Validated LoginRequest loginRequest){
         Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(loginRequest.getUsername(),loginRequest.getPassword());
+        subject.login(token);
         LoginUser user = subject.getPrincipals().oneByType(LoginUser.class);
         if(Objects.nonNull(user) && user.getUserName().equals(loginRequest.getUsername())) {
-            System.out.println(subject.getSession().getId());
-            return ResponseEntity.ok(LoginResponse.builder().user(user).build());
+            return ResponseEntity.ok(LoginResponse.builder().user(user).token(subject.getSession().getId().toString()).build());
         }
         return ResponseEntity.badRequest().build();
     }

@@ -18,33 +18,33 @@ public class MyAuthenticationFilter extends FormAuthenticationFilter {
         }
         return super.isAccessAllowed(request, response, mappedValue);
     }
-    
+
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response)
-        throws Exception {
+            throws Exception {
 //            WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        if (isAjax(request)) {
-            httpServletResponse.setCharacterEncoding("UTF-8");
-            httpServletResponse.setContentType("application/json");
-            //解决一下跨域问题
-            httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-            httpServletResponse.setHeader("Access-Control-Allow-Methods", "*");
-            httpServletResponse.setHeader("Access-Control-Max-Age", "0");
-            httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With,userId,token");
-            httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
-            httpServletResponse.setHeader("XDomainRequestAllowed","1");
-            httpServletResponse.getWriter().write("");
-            httpServletResponse.getWriter().flush();
-            httpServletResponse.getWriter().close();
-        } else {
-            WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
-        }
-        return false;
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        httpServletResponse.setContentType("application/json");
+        //解决一下跨域问题
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", httpServletResponse.getHeader("Origin"));
+        httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletResponse.getHeader("Access-Control-Request-Headers"));
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST,GET,PATCH,DELETE,PUT,OPTIONS");
+        httpServletResponse.setHeader("XDomainRequestAllowed", "1");
+        httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        /*
+         * 该字段可选，用来指定本次预检请求的有效期，单位为秒。上面结果中，有效期是1小时（3600秒），
+         * 即允许缓存该条回应3600秒（即1小时），在此期间，不用发出另一条预检请求。
+         */
+        httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
+
+
+        return super.onAccessDenied(request, response);
     }
-    private boolean isAjax(ServletRequest request){
+
+    private boolean isAjax(ServletRequest request) {
         String header = ((HttpServletRequest) request).getHeader("X-Requested-With");
-        if("XMLHttpRequest".equalsIgnoreCase(header)){
+        if ("XMLHttpRequest".equalsIgnoreCase(header)) {
             return Boolean.TRUE;
         }
         return Boolean.FALSE;

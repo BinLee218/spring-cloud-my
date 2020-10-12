@@ -5,8 +5,7 @@ export const initMenu = (router,store)=> {
     if(store.state.routes.length > 0){
         return;
     }
-    let userName = store.state.user.userName;
-    getRequest("/info/menu/"+userName).then(resp=> {
+    getRequest("/info/menu").then(resp=> {
         if(resp && resp.status === 200){
             console.info("我是菜单："+resp.data.menus);
             let fmtRoutes = formatRoutes(resp.data.menus);

@@ -1,7 +1,7 @@
 package com.company.mybatis.shiro;
 
+import com.company.mybatis.shiro.credentials.GeneralCredentialsMatcher;
 import com.company.mybatis.shiro.filter.CaptchaValidateFilter;
-import com.company.mybatis.shiro.filter.MyAuthenticationFilter;
 import org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
@@ -63,7 +63,8 @@ public class ShiroConfig {
     @Bean(name = "shiroFilterChainDefinition")
     public DefaultShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition definition = new DefaultShiroFilterChainDefinition();
-        definition.addPathDefinition("/api/auth/login", "captchaValidate,authc,perms[sys:login]");
+        //,perms[sys:login]
+        definition.addPathDefinition("/api/auth/login", "captchaValidate");
         definition.addPathDefinition("/api/**", "user");
         return definition;
     }
