@@ -1,5 +1,7 @@
 package com.company.test;
 
+import java.math.BigDecimal;
+
 /**
  * @author bin.li
  * @date 2020/9/15
@@ -7,19 +9,23 @@ package com.company.test;
 public class Test {
 
     public static void main(String[] args) {
-        Test test = new Test();
-        String ss = "a";
-        String i = test.test11(ss);
-        System.out.println(ss);
-        System.out.println(i);
+//        Test test = new Test();
+//        String ss = "a";
+//        String i = test.test11(ss);
+//        System.out.println(ss);
+//        System.out.println(i);
+//
+//        System.out.println(Integer.toBinaryString(-1231231231));
+//        System.out.println(Integer.toHexString(123));
+//        System.out.println(Integer.toOctalString(123));
+//        System.out.println(Integer.highestOneBit(123));
+//        System.out.println(Integer.lowestOneBit(123));
+//
+//        System.out.println(false || true);
 
-        System.out.println(Integer.toBinaryString(-1231231231));
-        System.out.println(Integer.toHexString(123));
-        System.out.println(Integer.toOctalString(123));
-        System.out.println(Integer.highestOneBit(123));
-        System.out.println(Integer.lowestOneBit(123));
-
-        System.out.println(false || true);
+        BigDecimal bigDecimal = new BigDecimal("71");
+        BigDecimal bigDecimal2 = new BigDecimal("622");
+        System.out.println(bigDecimal.compareTo(bigDecimal2) > 0);
     }
 
     public String test11(String ss) {

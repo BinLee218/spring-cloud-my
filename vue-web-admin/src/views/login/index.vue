@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">后 台 管 理 系 统</h3>
       </div>
 
       <el-form-item prop="username">
@@ -54,20 +54,20 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-
+import { validPassword } from '@/utils/validate'
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name叫啊叫啊'))
+        callback(new Error('4到16位（字母，数字，下划线）'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+      if (!validPassword(value)) {
+        callback(new Error('6到16位（字母，数字，下划线）'))
       } else {
         callback()
       }
@@ -112,7 +112,8 @@ export default {
           this.$store.dispatch('user/login', this.loginForm).then(() => {
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
-          }).catch(() => {
+          }).catch((error) => {
+            console.log(error)
             this.loading = false
           })
         } else {

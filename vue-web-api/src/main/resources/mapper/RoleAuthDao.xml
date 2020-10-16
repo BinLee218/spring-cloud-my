@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.splendor.dao.RoleAuthDao">
+  <resultMap id="BaseResultMap" type="com.spring.splendor.pojo.RoleAuth">
+    <id column="r_a_id" jdbcType="INTEGER" property="rAId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="auth_id" jdbcType="INTEGER" property="authId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    r_a_id, role_id, auth_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from role_auth
+    where r_a_id = #{rAId,jdbcType=INTEGER}
+  </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from role_auth
+    where r_a_id = #{rAId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="r_a_id" keyProperty="rAId" parameterType="com.spring.splendor.pojo.RoleAuth" useGeneratedKeys="true">
+    insert into role_auth (role_id, auth_id)
+    values (#{roleId,jdbcType=INTEGER}, #{authId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="r_a_id" keyProperty="rAId" parameterType="com.spring.splendor.pojo.RoleAuth" useGeneratedKeys="true">
+    insert into role_auth
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="authId != null">
+        auth_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="authId != null">
+        #{authId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spring.splendor.pojo.RoleAuth">
+    update role_auth
+    <set>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="authId != null">
+        auth_id = #{authId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where r_a_id = #{rAId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.spring.splendor.pojo.RoleAuth">
+    update role_auth
+    set role_id = #{roleId,jdbcType=INTEGER},
+      auth_id = #{authId,jdbcType=INTEGER}
+    where r_a_id = #{rAId,jdbcType=INTEGER}
+  </update>
+
+  <select id="findAuthByRoleId" resultType="java.lang.Integer">
+    select
+        auth_id
+    from role_auth
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </select>
+    <select id="findAllAuthByRoleId" resultType="java.lang.Integer">
+
+    </select>
+</mapper>

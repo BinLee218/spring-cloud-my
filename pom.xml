@@ -19,6 +19,7 @@
         <module>spring-cloud-redisson</module>
         <module>spring-cloud-mybatis</module>
         <module>spring-mybatis-sharding-jdbc</module>
+        <module>shiro-web-api</module>
         <module>vue-web-api</module>
     </modules>
     <parent>
@@ -144,7 +145,12 @@
                 <artifactId>shiro-redis</artifactId>
                 <version>3.3.1</version>
             </dependency>
-
+            <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>29.0-jre</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
