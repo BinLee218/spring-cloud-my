@@ -3,8 +3,10 @@ package com.company.mybatis.shiro.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
+import java.lang.annotation.Target;
 
 /**
  * @author bin.li
@@ -12,9 +14,10 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
+@ToString
 public class LoginUser implements Serializable {
 
-    private Integer userId;
+    private Integer id;
     private String userName;
     private String realName;
 }

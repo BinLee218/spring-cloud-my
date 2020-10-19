@@ -16,7 +16,6 @@ import java.util.List;
 @Builder
 @ToString
 public class Menu {
-
     private Integer id;
     private String path;
     private String component;
@@ -24,4 +23,8 @@ public class Menu {
     private String iconCls;
     private Integer parentId;
     private List<Menu> children;
+    private String redirect;
+    private Meta meta;
+
+
 }

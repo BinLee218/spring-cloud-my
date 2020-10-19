@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class ApiResponse {
 
-    private int subCode = 200;
-    private String subMessage;
+    private int subCode = 20000;
+    private String message;
 }

@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * @author bin.li
  * @date 2020/10/8
@@ -16,6 +18,7 @@ import lombok.Setter;
 @Builder
 public class LoginResponse extends ApiResponse {
 
-    private LoginUser user;
+    private String name;
+    private List<String> roles;
     private String token;
 }

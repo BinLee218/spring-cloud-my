@@ -35,12 +35,12 @@ public class UserService {
         return null;
     }
 
-    public void register(UserRegisterRequest userRegisterRequest) {
+    public void register(String userName, String realName, String pwd) {
         String salt = RandomStringUtils.randomAlphanumeric(20);
-        String password = salt + userRegisterRequest.getPassword() + salt;
+        String password = salt + pwd + salt;
         User user = User.builder()
-                .userName(userRegisterRequest.getUserName())
-                .realName(userRegisterRequest.getRealName())
+                .userName(pwd)
+                .realName(realName)
                 .salt(salt)
                 .password(DigestUtils.md5DigestAsHex(password.getBytes()))
                 .build();

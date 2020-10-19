@@ -1,14 +1,11 @@
 package com.company.mybatis.shiro.credentials;
 
 import com.company.mybatis.pojo.User;
-import com.company.mybatis.service.AuthService;
 import com.company.mybatis.service.UserService;
 import com.company.mybatis.shiro.model.LoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.DisabledAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -40,7 +37,7 @@ public class GeneralCredentialsMatcher implements CredentialsMatcher {
         UsernamePasswordToken token = (UsernamePasswordToken) ctoken;
         User user = userService.login(token.getUsername(), new String(token.getPassword()));
         if (Objects.nonNull(user) && user.getStatus() == 0) {
-            innerUser.setUserId(user.getUserId());
+            innerUser.setId(user.getUserId());
             innerUser.setUserName(user.getUserName());
             innerUser.setRealName(user.getRealName());
             return true;

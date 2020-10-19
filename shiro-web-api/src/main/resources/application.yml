@@ -37,6 +37,6 @@ logging:
   level:
     druid:
       sql:
-        Statement: debug
+        Statement: info
 server:
   port: 9800

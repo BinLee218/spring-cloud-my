@@ -2,7 +2,11 @@ package com.company.mybatis.shiro;
 
 import com.company.mybatis.shiro.credentials.GeneralCredentialsMatcher;
 import com.company.mybatis.shiro.filter.CaptchaValidateFilter;
+import com.company.mybatis.shiro.filter.JwtFilter;
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -12,8 +16,10 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 @Configuration
 public class ShiroConfig {
@@ -21,6 +27,24 @@ public class ShiroConfig {
     /*-------------------------------------------
     |             哈              哈             |
     ============================================*/
+    @Bean
+    @DependsOn("lifecycleBeanPostProcessor")
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator(){
+        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        advisorAutoProxyCreator.setProxyTargetClass(true);
+//        advisorAutoProxyCreator.setUsePrefix(true);
+        return advisorAutoProxyCreator;
+    }
+
+//    @Bean
+//    @DependsOn("lifecycleBeanPostProcessor")
+//    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+//        DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+//        defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
+//        defaultAdvisorAutoProxyCreator.setUsePrefix(true);
+//        return defaultAdvisorAutoProxyCreator;
+//    }
+
 
     /**
      * 验证码验证filter
@@ -30,6 +54,15 @@ public class ShiroConfig {
     @Bean(name = "captchaValidate")
     public CaptchaValidateFilter captchaValidate() {
         return new CaptchaValidateFilter();
+    }
+ /**
+     * 验证码验证filter
+     *
+     * @return
+     */
+    @Bean(name = "jwt")
+    public JwtFilter jwtFilter() {
+        return new JwtFilter();
     }
 
     /**
@@ -41,11 +74,6 @@ public class ShiroConfig {
     public GeneralCredentialsMatcher generalCredentialsMatcher() {
         return new GeneralCredentialsMatcher();
     }
-
-//    @Bean(name = "authc")
-//    public MyAuthenticationFilter myAuthenticationFilter() {
-//        return new MyAuthenticationFilter();
-//    }
 
     /**
      * 账户验证，权限验证
@@ -64,8 +92,8 @@ public class ShiroConfig {
     public DefaultShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition definition = new DefaultShiroFilterChainDefinition();
         //,perms[sys:login]
-        definition.addPathDefinition("/api/auth/login", "captchaValidate");
-        definition.addPathDefinition("/api/**", "user");
+        definition.addPathDefinition("/api/user/login", "captchaValidate");
+        definition.addPathDefinition("/api/**", "jwt");
         return definition;
     }
 
@@ -75,24 +103,29 @@ public class ShiroConfig {
         manager.setRealm(myRealm());
         manager.setSessionManager(defaultWebSessionManager());
         manager.setCacheManager(redisCacheManager());
+//        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+//        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+//        defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
+//        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
+//        manager.setSubjectDAO(subjectDAO);
 //        manager.setRememberMeManager(cookieRememberMeManager());
         return manager;
     }
-
-    @Bean
-    public CookieRememberMeManager cookieRememberMeManager() {
-        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-        cookieRememberMeManager.setCookie(simpleCookie());
-        return cookieRememberMeManager;
-    }
-
-    @Bean
-    public SimpleCookie simpleCookie() {
-        SimpleCookie simpleCookie = new SimpleCookie();
-        simpleCookie.setHttpOnly(true);
-        simpleCookie.setMaxAge(7200);
-        return simpleCookie;
-    }
+//
+//    @Bean
+//    public CookieRememberMeManager cookieRememberMeManager() {
+//        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+//        cookieRememberMeManager.setCookie(simpleCookie());
+//        return cookieRememberMeManager;
+//    }
+//
+//    @Bean
+//    public SimpleCookie simpleCookie() {
+//        SimpleCookie simpleCookie = new SimpleCookie();
+//        simpleCookie.setHttpOnly(true);
+//        simpleCookie.setMaxAge(7200);
+//        return simpleCookie;
+//    }
 
     @Bean
     public RedisManager redisManager() {
@@ -102,9 +135,9 @@ public class ShiroConfig {
     @Bean
     public RedisCacheManager redisCacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
-        redisCacheManager.setExpire(1800);
-        redisCacheManager.setKeyPrefix("shiro:cache:");
-        redisCacheManager.setPrincipalIdFieldName("userName");
+//        redisCacheManager.setExpire(1800);
+//        redisCacheManager.setKeyPrefix("shiro:cache:");
+//        redisCacheManager.setPrincipalIdFieldName("userName");
         redisCacheManager.setRedisManager(redisManager());
         return redisCacheManager;
     }
@@ -124,12 +157,11 @@ public class ShiroConfig {
 //        但是如在web环境中，如果用户不主动退出是不知道会话是否过期的，因此需要定期的检测会话是否过期，
 //        Shiro提供了会话验证调度器SessionValidationScheduler来做这件事情。
         ExecutorServiceSessionValidationScheduler scheduler = new ExecutorServiceSessionValidationScheduler();
-        scheduler.setInterval(1800000);
+        scheduler.setInterval(18000);
         scheduler.setSessionManager(defaultWebSessionManager);
         defaultWebSessionManager.setSessionValidationScheduler(scheduler);
 //        Shiro提供SessionDAO用于会话的CRUD
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-        redisSessionDAO.setKeyPrefix("shiro:session:");
         redisSessionDAO.setRedisManager(redisManager());
         defaultWebSessionManager.setSessionDAO(redisSessionDAO);
 //        是否启用/禁用Session Id Cookie，默认是启用的；
@@ -137,6 +169,11 @@ public class ShiroConfig {
 //        且通过URL重写（URL中的“;JSESSIONID=id”部分）保存Session Id。
         defaultWebSessionManager.setSessionIdCookieEnabled(true);
         return defaultWebSessionManager;
+    }
+
+    @Bean
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
     }
 
     @Bean

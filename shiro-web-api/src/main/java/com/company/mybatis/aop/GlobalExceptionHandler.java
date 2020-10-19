@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
         log.error("AvatecExceptionHandler:{},url:{}", e.getMessage(), request.getRequestURL());
         ApiResponse badRequest = new ApiResponse();
         badRequest.setSubCode(HttpStatus.BAD_REQUEST.value());
-        badRequest.setSubMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        badRequest.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
         log.error(e.getMessage(), e);
         return badRequest;
     }
@@ -59,9 +59,9 @@ public class GlobalExceptionHandler {
         if (CollectionUtils.isNotEmpty(fieldErrors)) {
             FieldError fieldError = fieldErrors.get(0);
             String field = fieldError.getField();
-            badRequest.setSubMessage(String.format("%s, Please enter the correct data", field));
+            badRequest.setMessage(String.format("%s, Please enter the correct data", field));
         } else {
-            badRequest.setSubMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
+            badRequest.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
         }
     }
 
@@ -85,7 +85,7 @@ public class GlobalExceptionHandler {
         ApiResponse badRequest = new ApiResponse();
         badRequest.setSubCode(HttpStatus.BAD_REQUEST.value());
         DateTimeParseException e1 = (DateTimeParseException) e;
-        badRequest.setSubMessage(String.format("%s, Please enter a time type",  e1.getParsedString()));
+        badRequest.setMessage(String.format("%s, Please enter a time type",  e1.getParsedString()));
         log.error(e.getMessage(), e);
         return badRequest;
     }

@@ -1,7 +1,5 @@
 package com.company.mybatis.shiro;
 
-import com.company.mybatis.controller.response.MenuResponse;
-import com.company.mybatis.facade.HomeFacadeService;
 import com.company.mybatis.pojo.Auth;
 import com.company.mybatis.pojo.Role;
 import com.company.mybatis.service.AuthService;
@@ -10,7 +8,6 @@ import com.company.mybatis.service.RoleService;
 import com.company.mybatis.service.UserRoleService;
 import com.company.mybatis.service.UserService;
 import com.company.mybatis.shiro.model.LoginUser;
-import com.company.mybatis.shiro.model.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -26,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -61,10 +57,9 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         log.info(" =============== " + getClass().getSimpleName() + ":doGetAuthenticationInfo ===============");
-        UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authcToken;
         LoginUser userInfo = new LoginUser();
-        userInfo.setUserName(usernamePasswordToken.getUsername());
-        return new SimpleAuthenticationInfo(userInfo, authcToken.getCredentials(), getName());
+        UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken)authcToken;
+        return new SimpleAuthenticationInfo(userInfo, usernamePasswordToken.getPassword(),usernamePasswordToken.getUsername());
     }
 
     /**
@@ -85,7 +80,7 @@ public class UserRealm extends AuthorizingRealm {
         log.info(" =============== " + getClass().getSimpleName() + ":doGetAuthorizationInfo ===============");
         LoginUser innerUser = principals.oneByType(LoginUser.class);
         if (innerUser != null) {
-            Integer roleId = userRoleService.findRoleByUserId(innerUser.getUserId());
+            Integer roleId = userRoleService.findRoleByUserId(innerUser.getId());
             Role role = roleService.selectByPrimaryKey(roleId);
             List<Integer> roleAuthIds = roleAuthService.findAuthByRoleId(role.getRoleId());
             List<Auth> auths = authService.findAllAuthByIds(roleAuthIds);

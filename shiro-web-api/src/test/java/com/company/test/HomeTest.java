@@ -1,10 +1,10 @@
 package com.company.test;
 
-import com.alibaba.druid.support.spring.stat.SpringStatUtils;
-import com.company.mybatis.VueApiApplication;
+import com.company.mybatis.ShiroWebApiApplication;
 import com.company.mybatis.controller.response.MenuResponse;
 import com.company.mybatis.dto.Menu;
 import com.company.mybatis.facade.HomeFacadeService;
+import com.company.mybatis.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,11 +18,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = VueApiApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ShiroWebApiApplication.class)
 public class HomeTest {
 
     @Autowired
     private HomeFacadeService homeFacadeService;
+
+
+    @Autowired
+    private UserService userService;
 
     @Test
     public void testMenu(){
@@ -30,5 +34,9 @@ public class HomeTest {
         for (Menu menu : menuResponse.getMenus()) {
             System.out.println(menu.toString());
         }
+    }
+    @Test
+    public void testRegist(){
+        userService.register("libin123", "李斌123", "libin123");
     }
 }

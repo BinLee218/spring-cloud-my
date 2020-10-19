@@ -20,6 +20,7 @@ service.interceptors.request.use(
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
       config.headers['X-Token'] = getToken()
+      config.headers['Authorization'] = getToken()
     }
     return config
   },
@@ -48,7 +49,7 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
     if (res.subCode !== 20000) {
       Message({
-        message: res.message || 'Error',
+        message: res.message || 'Error 请求失败',
         type: 'error',
         duration: 5 * 1000
       })
