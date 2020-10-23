@@ -1,8 +1,6 @@
 package com.company.test;
 
 import com.company.mybatis.ShiroWebApiApplication;
-import com.company.mybatis.controller.response.MenuResponse;
-import com.company.mybatis.dto.Menu;
 import com.company.mybatis.facade.HomeFacadeService;
 import com.company.mybatis.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,13 +26,7 @@ public class HomeTest {
     @Autowired
     private UserService userService;
 
-    @Test
-    public void testMenu(){
-        MenuResponse menuResponse = homeFacadeService.getMenuByUserName("libin");
-        for (Menu menu : menuResponse.getMenus()) {
-            System.out.println(menu.toString());
-        }
-    }
+
     @Test
     public void testRegist(){
         userService.register("libin123", "李斌123", "libin123");

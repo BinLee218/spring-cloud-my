@@ -22,7 +22,7 @@ public class ShiroSubjectInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String authorization = request.getHeader("Authorization");
         String sessionId = JwtTokenUtils.getPayloadMapValue(authorization, JwtTokenUtils.SESSION_KEY);
-        if(StringUtils.isBlank(sessionId)){
+        if(StringUtils.isBlank(sessionId)) {
             ApiResponse apiResponse = new ApiResponse();
             apiResponse.setSubCode(ApiResponseStatusCodeEnum.TOKEN_EXPIRED.getSubCode());
             apiResponse.setSubMessage(ApiResponseStatusCodeEnum.TOKEN_EXPIRED.getMessage());

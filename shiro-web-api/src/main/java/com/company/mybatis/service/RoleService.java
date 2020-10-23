@@ -54,6 +54,6 @@ public class RoleService {
             roleDao.updateByPrimaryKeySelective(primaryKey);
             return;
         }
-        AdminException.createRuntimeException(AdminExceptionEnum.NOT_ROLE_OBJECT_EXCEPTION);
+        throw AdminException.createRuntimeException(AdminExceptionEnum.NOT_ROLE_OBJECT_EXCEPTION);
     }
 }

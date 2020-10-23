@@ -1,5 +1,7 @@
 package com.company.mybatis.shiro.credentials;
 
+import com.company.mybatis.commons.adminException.AdminException;
+import com.company.mybatis.commons.enums.AdminExceptionEnum;
 import com.company.mybatis.pojo.User;
 import com.company.mybatis.service.UserService;
 import com.company.mybatis.shiro.model.LoginUser;
@@ -15,8 +17,6 @@ import java.util.Objects;
 
 /**
  * @author bin.li
- * @date 2018/8/27
- * Shiro提供了PasswordService及CredentialsMatcher用于提供加密密码及验证密码服务。
  */
 @Slf4j
 public class GeneralCredentialsMatcher implements CredentialsMatcher {
@@ -43,7 +43,7 @@ public class GeneralCredentialsMatcher implements CredentialsMatcher {
             return true;
         }
         log.info("登录用户不存在或用户状态不正确，用户名：{}", token.getUsername());
-        return false;
+        throw AdminException.createRuntimeException(AdminExceptionEnum.LOGIN_ERROR_EXCEPTION);
     }
 }
 

@@ -29,6 +29,6 @@ public class AdminException extends RuntimeException {
     }
 
     public static AdminException createRuntimeException(AdminExceptionEnum adminExceptionEnum){
-        throw new AdminException(adminExceptionEnum);
+        return new AdminException(adminExceptionEnum);
     }
 }
