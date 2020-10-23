@@ -1,11 +1,19 @@
 package com.company.mybatis.config;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -18,6 +26,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * @author bin.li
@@ -56,10 +65,20 @@ public class DataSourceMasterConfig {
         sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
         sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(MAPPER_XML_PATH));
         //mybatis.type-handlers-package=
-        sqlSessionFactoryBean.setTypeAliasesPackage("com.avatec.core.handler");
-        sqlSessionFactoryBean.setTypeHandlersPackage("com.avatec.core.handler");
+        sqlSessionFactoryBean.setTypeAliasesPackage("com.aaa.core.handler");
+        sqlSessionFactoryBean.setTypeHandlersPackage("com.aaa.core.handler");
         sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
-        return sqlSessionFactoryBean.getObject();
+        //分页
+        PageInterceptor pageInterceptor = new PageInterceptor();
+        Properties properties = new Properties();
+        properties.setProperty("helperDialect","mysql");
+//        properties.setProperty("reasonable","true");
+//        properties.setProperty("supportMethodsArguments","true");
+//        properties.setProperty("params","count=countSql");
+        pageInterceptor.setProperties(properties);
+        SqlSessionFactory object = sqlSessionFactoryBean.getObject();
+        object.getConfiguration().addInterceptor(pageInterceptor);
+        return object;
     }
 
     @Bean(name = "masterTransactionManager")

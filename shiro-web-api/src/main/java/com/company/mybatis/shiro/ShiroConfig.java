@@ -3,6 +3,7 @@ package com.company.mybatis.shiro;
 import com.company.mybatis.shiro.credentials.GeneralCredentialsMatcher;
 import com.company.mybatis.shiro.filter.CaptchaValidateFilter;
 import com.company.mybatis.shiro.filter.JwtFilter;
+import com.company.mybatis.shiro.jwt.JwtSessionIdGenerator;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler;
@@ -32,19 +33,8 @@ public class ShiroConfig {
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator(){
         DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         advisorAutoProxyCreator.setProxyTargetClass(true);
-//        advisorAutoProxyCreator.setUsePrefix(true);
         return advisorAutoProxyCreator;
     }
-
-//    @Bean
-//    @DependsOn("lifecycleBeanPostProcessor")
-//    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
-//        DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
-//        defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
-//        defaultAdvisorAutoProxyCreator.setUsePrefix(true);
-//        return defaultAdvisorAutoProxyCreator;
-//    }
-
 
     /**
      * 验证码验证filter
@@ -91,7 +81,6 @@ public class ShiroConfig {
     @Bean(name = "shiroFilterChainDefinition")
     public DefaultShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition definition = new DefaultShiroFilterChainDefinition();
-        //,perms[sys:login]
         definition.addPathDefinition("/api/user/login", "captchaValidate");
         definition.addPathDefinition("/api/**", "jwt");
         return definition;
@@ -103,30 +92,8 @@ public class ShiroConfig {
         manager.setRealm(myRealm());
         manager.setSessionManager(defaultWebSessionManager());
         manager.setCacheManager(redisCacheManager());
-//        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
-//        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
-//        defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
-//        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
-//        manager.setSubjectDAO(subjectDAO);
-//        manager.setRememberMeManager(cookieRememberMeManager());
         return manager;
     }
-//
-//    @Bean
-//    public CookieRememberMeManager cookieRememberMeManager() {
-//        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-//        cookieRememberMeManager.setCookie(simpleCookie());
-//        return cookieRememberMeManager;
-//    }
-//
-//    @Bean
-//    public SimpleCookie simpleCookie() {
-//        SimpleCookie simpleCookie = new SimpleCookie();
-//        simpleCookie.setHttpOnly(true);
-//        simpleCookie.setMaxAge(7200);
-//        return simpleCookie;
-//    }
-
     @Bean
     public RedisManager redisManager() {
         return new RedisManager();
@@ -135,9 +102,6 @@ public class ShiroConfig {
     @Bean
     public RedisCacheManager redisCacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
-//        redisCacheManager.setExpire(1800);
-//        redisCacheManager.setKeyPrefix("shiro:cache:");
-//        redisCacheManager.setPrincipalIdFieldName("userName");
         redisCacheManager.setRedisManager(redisManager());
         return redisCacheManager;
     }
@@ -162,12 +126,13 @@ public class ShiroConfig {
         defaultWebSessionManager.setSessionValidationScheduler(scheduler);
 //        Shiro提供SessionDAO用于会话的CRUD
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+//        redisSessionDAO.setSessionIdGenerator(new JwtSessionIdGenerator());
         redisSessionDAO.setRedisManager(redisManager());
         defaultWebSessionManager.setSessionDAO(redisSessionDAO);
 //        是否启用/禁用Session Id Cookie，默认是启用的；
 //        如果禁用后将不会设置Session Id Cookie，即默认使用了Servlet容器的JSESSIONID，
 //        且通过URL重写（URL中的“;JSESSIONID=id”部分）保存Session Id。
-        defaultWebSessionManager.setSessionIdCookieEnabled(true);
+        defaultWebSessionManager.setSessionIdCookieEnabled(false);
         return defaultWebSessionManager;
     }
 

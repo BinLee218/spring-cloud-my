@@ -45,11 +45,11 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-
+    console.info(res)
     // if the custom code is not 20000, it is judged as an error.
     if (res.subCode !== 20000) {
       Message({
-        message: res.message || 'Error 请求失败',
+        message: res.subMessage || 'Error 请求失败',
         type: 'error',
         duration: 5 * 1000
       })
@@ -66,8 +66,9 @@ service.interceptors.response.use(
             location.reload()
           })
         })
+      } else {
+        return Promise.reject(new Error(res.subMessage || 'Error'))
       }
-      return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return res
     }
@@ -75,7 +76,7 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error) // for debug
     Message({
-      message: error.message,
+      message: error.subMessage,
       type: 'error',
       duration: 5 * 1000
     })

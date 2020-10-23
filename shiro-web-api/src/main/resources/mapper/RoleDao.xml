@@ -13,23 +13,24 @@
     role_id, role_name, role_value, `state`, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
-    from role
+    from roles
     where role_id = #{roleId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from role
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from roles
     where role_id = #{roleId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="role_id" keyProperty="roleId" parameterType="com.company.mybatis.pojo.Role" useGeneratedKeys="true">
-    insert into role (role_name, role_value, `state`, 
+    insert into roles (role_name, role_value, `state`,
       create_time, update_time)
-    values (#{roleName,jdbcType=VARCHAR}, #{roleValue,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+    values (#{roleName,jdbcType=VARCHAR}, #{roleValue,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="role_id" keyProperty="roleId" parameterType="com.company.mybatis.pojo.Role" useGeneratedKeys="true">
-    insert into role
+  <insert id="insertSelective" parameterType="com.company.mybatis.pojo.Role" >
+    insert into roles
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="roleName != null">
         role_name,
@@ -66,7 +67,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.company.mybatis.pojo.Role">
-    update role
+    update roles
     <set>
       <if test="roleName != null">
         role_name = #{roleName,jdbcType=VARCHAR},
@@ -87,7 +88,7 @@
     where role_id = #{roleId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.company.mybatis.pojo.Role">
-    update role
+    update roles
     set role_name = #{roleName,jdbcType=VARCHAR},
       role_value = #{roleValue,jdbcType=VARCHAR},
       `state` = #{state,jdbcType=INTEGER},
@@ -95,4 +96,21 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where role_id = #{roleId,jdbcType=INTEGER}
   </update>
+  <select id="getAllByPage" resultType="com.company.mybatis.pojo.Role" parameterType="com.company.mybatis.dto.RolePage">
+    select * from roles
+    <where>
+      <if test="roleName != null and roleName != ''">
+        and role_name = #{roleName,jdbcType=VARCHAR}
+      </if>
+      <if test="roleValue != null and roleValue != ''">
+        and role_value = #{roleValue,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        and create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null and startTime != ''">
+        and create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
 </mapper>

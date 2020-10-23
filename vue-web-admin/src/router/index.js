@@ -165,7 +165,7 @@ export const asyncRoutes = [
   {
     path: '/permission',
     component: Layout,
-    redirect: '/permission/page',
+    redirect: '/permission/auth',
     alwaysShow: true, // will always show the root menu
     name: 'Permission',
     meta: {
@@ -175,8 +175,8 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
+        path: 'auth',
+        component: () => import('@/views/permission/auth'),
         name: 'PagePermission',
         meta: {
           title: '权限管理',
@@ -184,17 +184,8 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'directivePermission'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
         path: 'role',
-        component: () => import('@/views/permission/role'),
+        component: () => import('@/views/permission/role/index'),
         name: 'RolePermission',
         meta: {
           title: '角色管理',
@@ -202,6 +193,21 @@ export const asyncRoutes = [
         }
       }
     ]
+  },
+  {
+    path: '/role',
+    component: Layout,
+    redirect: '/permission/addRole',
+    hidden: true,
+    children: [{
+      path: 'addRole',
+      name: 'addRole',
+      component: () => import('@/views/permission/role/addRole'),
+      meta: {
+        title: '添加角色',
+        roles: ['admin'] // you can set roles in root nav
+      }
+    }]
   },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

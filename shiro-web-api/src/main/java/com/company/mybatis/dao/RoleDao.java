@@ -1,7 +1,12 @@
 package com.company.mybatis.dao;
 
+import com.company.mybatis.controller.request.RoleRequest;
+import com.company.mybatis.dto.PageParam;
+import com.company.mybatis.dto.RolePage;
 import com.company.mybatis.pojo.Role;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface RoleDao {
@@ -16,4 +21,6 @@ public interface RoleDao {
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
+
+    List<Role> getAllByPage(RolePage rolePage);
 }

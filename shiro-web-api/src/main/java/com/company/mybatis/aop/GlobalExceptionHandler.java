@@ -1,6 +1,7 @@
 package com.company.mybatis.aop;
 
 import com.company.mybatis.commons.ApiResponse;
+import com.company.mybatis.commons.adminException.AdminException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.http.HttpStatus;
@@ -31,10 +32,25 @@ public class GlobalExceptionHandler {
         log.error("AvatecExceptionHandler:{},url:{}", e.getMessage(), request.getRequestURL());
         ApiResponse badRequest = new ApiResponse();
         badRequest.setSubCode(HttpStatus.BAD_REQUEST.value());
-        badRequest.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        badRequest.setSubMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
         log.error(e.getMessage(), e);
         return badRequest;
     }
+
+    /**
+     * 捕获自定义异常，处理所有不可知的异常
+     */
+    @ExceptionHandler(value= AdminException.class)
+    public Object AdminException(Exception e, HttpServletRequest request) {
+        AdminException adminException = (AdminException)e;
+        log.error("AdminException: [{}]-[{}], url: [{}]", adminException.getLabel(), adminException.getMessage(), request.getRequestURL());
+        ApiResponse badRequest = new ApiResponse();
+        badRequest.setSubCode(adminException.getStatus());
+        badRequest.setSubMessage(String.format("%s",  adminException.getMessage()));
+        log.error(e.getMessage(), e);
+        return badRequest;
+    }
+
 
     /**
      * 捕获参数校验异常
@@ -59,9 +75,9 @@ public class GlobalExceptionHandler {
         if (CollectionUtils.isNotEmpty(fieldErrors)) {
             FieldError fieldError = fieldErrors.get(0);
             String field = fieldError.getField();
-            badRequest.setMessage(String.format("%s, Please enter the correct data", field));
+            badRequest.setSubMessage(String.format("%s, Please enter the correct data", field));
         } else {
-            badRequest.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
+            badRequest.setSubMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
         }
     }
 
@@ -85,7 +101,7 @@ public class GlobalExceptionHandler {
         ApiResponse badRequest = new ApiResponse();
         badRequest.setSubCode(HttpStatus.BAD_REQUEST.value());
         DateTimeParseException e1 = (DateTimeParseException) e;
-        badRequest.setMessage(String.format("%s, Please enter a time type",  e1.getParsedString()));
+        badRequest.setSubMessage(String.format("%s, Please enter a time type",  e1.getParsedString()));
         log.error(e.getMessage(), e);
         return badRequest;
     }

@@ -37,6 +37,9 @@ logging:
   level:
     druid:
       sql:
-        Statement: info
+        Statement: debug
+#logging:
+#  level:
+#    com.baomidou.mybatisplus.samples: debug
 server:
   port: 9800

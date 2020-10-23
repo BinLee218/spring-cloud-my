@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class LoginResponse extends ApiResponse {
+public class LoginResponse {
 
     private String name;
     private List<String> roles;
