@@ -8,6 +8,13 @@ export function login(data) {
   })
 }
 
+export function logout() {
+  return request({
+    url: '/api/user/logout',
+    method: 'post'
+  })
+}
+
 export function getInfo(token) {
   return request({
     url: '/api/user/info',
@@ -16,18 +23,27 @@ export function getInfo(token) {
   })
 }
 
-export function getUserMenus(token) {
+export function getAllUsers(data) {
   return request({
-    url: '/api/user/menu',
-    method: 'get',
-    params: { token }
+    url: '/api/users',
+    method: 'post',
+    data
   })
 }
 
-export function logout() {
+export function updateUser(data) {
   return request({
-    url: '/api/user/logout',
-    method: 'post'
+    url: '/api/user/update',
+    method: 'post',
+    data
+  })
+}
+
+export function addUser(data) {
+  return request({
+    url: '/api/user/add',
+    method: 'post',
+    data
   })
 }
 

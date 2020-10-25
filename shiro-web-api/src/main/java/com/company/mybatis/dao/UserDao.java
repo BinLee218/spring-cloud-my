@@ -1,8 +1,11 @@
 package com.company.mybatis.dao;
 
+import com.company.mybatis.dto.UserPage;
 import com.company.mybatis.pojo.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface UserDao {
@@ -19,4 +22,6 @@ public interface UserDao {
     int updateByPrimaryKey(User record);
 
     User findUserByUserName(@Param("userName") String username);
+
+    List<User> getAllByPage(UserPage userPage);
 }

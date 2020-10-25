@@ -35,12 +35,16 @@
           <el-table-column prop="roleId" label="主键ID" width="180"></el-table-column>
           <el-table-column prop="roleName" label="角色名" width="180"></el-table-column>
           <el-table-column prop="roleValue" label="角色值"></el-table-column>
-          <el-table-column prop="state" label="状态"></el-table-column>
+          <el-table-column prop="state" label="状态">
+            <template slot-scope="scope">
+              {{computedStatusType(scope.row.state)}}
+            </template>
+          </el-table-column>
           <el-table-column prop="createTime" label="创建时间"></el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
               <el-button @click.native="showRole(scope.row)" type="text" size="small">查看</el-button>
-              <el-button type="text" size="small" v-if="scope.row.roleValue!='admin'" @click.native="showUpdateRole(scope.row)" >编辑</el-button>
+              <el-button type="text" size="small" v-if="scope.row.roleValue!='admin'" @click.native="showUpdateRole(scope.row)">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -226,10 +230,6 @@ export default {
       this.paginationData.pageSize = val
       this.getAllRoles()
     },
-    formatDate(value) {
-      this.value1 = new Date(value.createdTime)
-      return this.$moment(this.value1).format('yyyy-MM-dd HH:mm:ss')
-    },
     addRole() {
       this.$router.push({ path: '/role/addRole' })
     },
@@ -263,6 +263,14 @@ export default {
       this.dialogUpdate.form.roleValue = data.roleValue
       this.dialogUpdate.form.state = data.state
       this.dialogUpdate.dialogRoleShowVisible = true
+    },
+    computedStatusType(status) {
+      if (status === 0) {
+        return '不可用'
+      }
+      if (status === 1) {
+        return '可用'
+      }
     }
   }
 }

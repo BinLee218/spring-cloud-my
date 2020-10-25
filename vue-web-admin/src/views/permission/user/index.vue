@@ -3,16 +3,13 @@
     <el-container>
       <el-header>
         <div class="tip">
-          <p>角色列表</p>
+          <p>用户管理</p>
         </div>
       </el-header>
       <el-main>
         <el-form :inline="true" :model="formInline" class="demo-form-inline" size="small">
           <el-form-item>
-            <el-input v-model="formInline.roleName" placeholder="角色名"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-input v-model="formInline.roleValue" placeholder="角色值"></el-input>
+            <el-input v-model="formInline.userName" placeholder="登录名"></el-input>
           </el-form-item>
           <el-form-item>
             <el-date-picker
@@ -27,20 +24,25 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="roleSearch">查询</el-button>
-            <el-button type="primary" @click="addRole">添加</el-button>
+            <el-button type="primary" @click="search">查询</el-button>
+            <el-button type="primary" @click="showAddUser">添加</el-button>
           </el-form-item>
         </el-form>
         <el-table :data="tableData" border stripe style="width: 100%; border-radius: 4px" :row-class-name="tableRowClassName">
-          <el-table-column prop="roleId" label="主键ID" width="180"></el-table-column>
-          <el-table-column prop="roleName" label="角色名" width="180"></el-table-column>
-          <el-table-column prop="roleValue" label="角色值"></el-table-column>
-          <el-table-column prop="state" label="状态"></el-table-column>
+          <el-table-column prop="userId" label="主键ID" width="180"></el-table-column>
+          <el-table-column prop="userName" label="登录名" width="180"></el-table-column>
+          <el-table-column prop="realName" label="真实姓名"></el-table-column>
+          <el-table-column prop="status" label="状态">
+            <template slot-scope="scope">
+              {{computedStatusType(scope.row.status)}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="lastLoginTime" label="最后登录时间"></el-table-column>
           <el-table-column prop="createTime" label="创建时间"></el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
               <el-button @click.native="showRole(scope.row)" type="text" size="small">查看</el-button>
-              <el-button type="text" size="small" v-if="scope.row.roleValue!='admin'" @click.native="showUpdateRole(scope.row)" >编辑</el-button>
+              <el-button type="text" size="small" @click.native="showUpdateUser(scope.row)" >编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -55,20 +57,45 @@
         ></el-pagination>
       </el-main>
     </el-container>
-    <!--    修改   -->
-    <el-dialog title="修改用户角色" :visible.sync="dialogUpdate.dialogFormVisible">
-      <el-form :model="dialogUpdate.form" label-position="left" label-width="80px" size="mini">
-        <el-form-item label="主键ID">
-          <el-input v-model="dialogUpdate.form.roleId" autocomplete="off" disabled></el-input>
+    <!--    新增   -->
+    <el-dialog title="新增用户" :visible.sync="dialogAdd.dialogAddFormVisible">
+      <el-form :model="dialogAdd.form" label-position="left" label-width="80px" size="mini">
+        <el-form-item label="登录名">
+          <el-input v-model="dialogAdd.form.userName"></el-input>
         </el-form-item>
-        <el-form-item label="角色名称">
-          <el-input v-model="dialogUpdate.form.roleName"></el-input>
-        </el-form-item>
-        <el-form-item label="角色值">
-          <el-input v-model="dialogUpdate.form.roleValue"></el-input>
+        <el-form-item label="真实姓名">
+          <el-input v-model="dialogAdd.form.realName"></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="dialogUpdate.form.state" placeholder="请选择">
+          <el-select v-model="dialogAdd.form.status" placeholder="请选择">
+            <el-option
+              v-for="item in stateList"
+              :key="item.value"
+              :label="item.lable"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogAdd.dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addUser">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!--    修改   -->
+    <el-dialog title="修改用户" :visible.sync="dialogUpdate.dialogFormVisible">
+      <el-form :model="dialogUpdate.form" label-position="left" label-width="80px" size="mini">
+        <el-form-item label="主键ID">
+          <el-input v-model="dialogUpdate.form.userId" autocomplete="off" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="登录名">
+          <el-input v-model="dialogUpdate.form.userName"></el-input>
+        </el-form-item>
+        <el-form-item label="真实姓名">
+          <el-input v-model="dialogUpdate.form.realName"></el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="dialogUpdate.form.status" placeholder="请选择">
             <el-option
               v-for="item in stateList"
               :key="item.value"
@@ -80,23 +107,23 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogUpdate.dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="updateRole">确 定</el-button>
+        <el-button type="primary" @click="updateUser">确 定</el-button>
       </div>
     </el-dialog>
     <!--    查看   -->
-    <el-dialog title="查看用户角色" :visible.sync="dialogUpdate.dialogRoleShowVisible">
+    <el-dialog title="查看用户角色" :visible.sync="dialogUpdate.dialogShowVisible">
       <el-form :model="dialogUpdate.form" label-position="left" label-width="80px" size="mini">
         <el-form-item label="主键ID">
-          <el-input v-model="dialogUpdate.form.roleId" autocomplete="off" disabled></el-input>
+          <el-input v-model="dialogUpdate.form.userId" autocomplete="off" disabled></el-input>
         </el-form-item>
         <el-form-item label="角色名称">
-          <el-input v-model="dialogUpdate.form.roleName" disabled></el-input>
+          <el-input v-model="dialogUpdate.form.userName" disabled></el-input>
         </el-form-item>
         <el-form-item label="角色值">
-          <el-input v-model="dialogUpdate.form.roleValue" disabled></el-input>
+          <el-input v-model="dialogUpdate.form.realName" disabled></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="dialogUpdate.form.state" disabled placeholder="请选择">
+          <el-select v-model="dialogUpdate.form.status" disabled placeholder="请选择">
             <el-option
               v-for="item in stateList"
               :key="item.value"
@@ -111,14 +138,14 @@
 </template>
 
 <script>
-import { getAllRole, updateRole } from '@/api/role'
-
+import { getAllUsers, updateUser, addUser } from '@/api/user'
+import { getAllNameValue } from '@/api/role'
 export default {
   data() {
     return {
       formInline: {
-        roleName: '',
-        roleValue: '',
+        userName: '',
+        realName: '',
         timeRange: '',
         pickerOptions: {
           shortcuts: [
@@ -153,6 +180,7 @@ export default {
         }
       },
       tableData: [],
+      tableDataRole: [],
       paginationData: {
         currentPage: 1,
         pageSize: 10,
@@ -160,13 +188,21 @@ export default {
       },
       dialogUpdate: {
         form: {
-          roleId: '',
-          roleName: '',
-          roleValue: '',
-          state: ''
+          userId: '',
+          userName: '',
+          realName: '',
+          status: ''
         },
         dialogFormVisible: false,
-        dialogRoleShowVisible: false
+        dialogShowVisible: false
+      },
+      dialogAdd: {
+        form: {
+          userName: '',
+          realName: '',
+          status: ''
+        },
+        dialogAddFormVisible: false
       },
       stateList: [
         {
@@ -183,21 +219,26 @@ export default {
     }
   },
   mounted() {
-    this.getAllRoles()
+    this.getAllUsers()
+    getAllNameValue().then(response => {
+      if (response.subCode === 20000) {
+        this.tableDataRole = response.data
+        console.info(this.tableDataRole)
+      }
+    })
   },
   methods: {
-    getAllRoles() {
+    getAllUsers() {
       const data = {
         pageNum: this.paginationData.currentPage,
         pageSize: this.paginationData.pageSize,
-        roleName: this.formInline.roleName.trim(),
-        roleValue: this.formInline.roleValue.trim(),
+        userName: this.formInline.userName.trim(),
         startTime: this.formInline.timeRange[0],
         endTime: this.formInline.timeRange[1]
       }
       console.info(data.startTime)
       console.info(data.endTime)
-      getAllRole(data).then(response => {
+      getAllUsers(data).then(response => {
         if (response.subCode === 20000) {
           this.tableData = response.data.list
           console.info(response)
@@ -215,54 +256,74 @@ export default {
       }
       return ''
     },
-    roleSearch() {
-      this.getAllRoles()
+    search() {
+      this.getAllUsers()
     },
     changePage(val) {
       this.paginationData.currentPage = val
-      this.getAllRoles()
+      this.getAllUsers()
     },
     changePageSize(val) {
       this.paginationData.pageSize = val
-      this.getAllRoles()
+      this.getAllUsers()
     },
-    formatDate(value) {
-      this.value1 = new Date(value.createdTime)
-      return this.$moment(this.value1).format('yyyy-MM-dd HH:mm:ss')
-    },
-    addRole() {
-      this.$router.push({ path: '/role/addRole' })
-    },
-    updateRole() {
+    addUser() {
       const data = {
-        roleId: this.dialogUpdate.form.roleId,
-        roleName: this.dialogUpdate.form.roleName.trim(),
-        roleValue: this.dialogUpdate.form.roleValue.trim(),
-        state: this.dialogUpdate.form.state
+        userName: this.dialogAdd.form.userName.trim(),
+        realName: this.dialogAdd.form.realName.trim(),
+        status: this.dialogAdd.form.status
       }
-      updateRole(data).then(response => {
+      addUser(data).then(response => {
+        if (response.subCode === 20000) {
+          this.$message.success('新增成功')
+          this.getAllUsers()
+          this.dialogAdd.dialogAddFormVisible = false
+        } else {
+          this.$message('新增失败!')
+        }
+      })
+    },
+    updateUser() {
+      const data = {
+        userId: this.dialogUpdate.form.userId,
+        userName: this.dialogUpdate.form.userName.trim(),
+        realName: this.dialogUpdate.form.realName.trim(),
+        status: this.dialogUpdate.form.status
+      }
+      updateUser(data).then(response => {
         if (response.subCode === 20000) {
           this.$message.success('更新成功')
-          this.getAllRoles()
+          this.getAllUsers()
           this.dialogUpdate.dialogFormVisible = false
         } else {
           this.$message('更新失败!')
         }
       })
     },
-    showUpdateRole(data) {
-      this.dialogUpdate.form.roleId = data.roleId
-      this.dialogUpdate.form.roleName = data.roleName
-      this.dialogUpdate.form.roleValue = data.roleValue
-      this.dialogUpdate.form.state = data.state
+    showUpdateUser(data) {
+      this.dialogUpdate.form.userId = data.userId
+      this.dialogUpdate.form.userName = data.userName
+      this.dialogUpdate.form.realName = data.realName
+      this.dialogUpdate.form.status = data.status
       this.dialogUpdate.dialogFormVisible = true
     },
     showRole(data) {
-      this.dialogUpdate.form.roleId = data.roleId
-      this.dialogUpdate.form.roleName = data.roleName
-      this.dialogUpdate.form.roleValue = data.roleValue
-      this.dialogUpdate.form.state = data.state
-      this.dialogUpdate.dialogRoleShowVisible = true
+      this.dialogUpdate.form.userId = data.userId
+      this.dialogUpdate.form.userName = data.userName
+      this.dialogUpdate.form.realName = data.realName
+      this.dialogUpdate.form.status = data.status
+      this.dialogUpdate.dialogShowVisible = true
+    },
+    computedStatusType(status) {
+      if (status === 0) {
+        return '不可用'
+      }
+      if (status === 1) {
+        return '可用'
+      }
+    },
+    showAddUser() {
+      this.dialogAdd.dialogAddFormVisible = true
     }
   }
 }

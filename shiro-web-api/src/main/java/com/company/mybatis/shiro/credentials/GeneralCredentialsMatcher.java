@@ -36,7 +36,7 @@ public class GeneralCredentialsMatcher implements CredentialsMatcher {
         LoginUser innerUser = principals.oneByType(LoginUser.class);
         UsernamePasswordToken token = (UsernamePasswordToken) ctoken;
         User user = userService.login(token.getUsername(), new String(token.getPassword()));
-        if (Objects.nonNull(user) && user.getStatus() == 0) {
+        if (Objects.nonNull(user) && user.getStatus() == 1) {
             innerUser.setId(user.getUserId());
             innerUser.setUserName(user.getUserName());
             innerUser.setRealName(user.getRealName());

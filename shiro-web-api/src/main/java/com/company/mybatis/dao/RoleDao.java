@@ -23,4 +23,7 @@ public interface RoleDao {
     int updateByPrimaryKey(Role record);
 
     List<Role> getAllByPage(RolePage rolePage);
+
+    List<Role> selectActiveAll();
+
 }

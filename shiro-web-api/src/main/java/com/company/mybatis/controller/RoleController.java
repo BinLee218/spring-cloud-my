@@ -14,10 +14,13 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author bin.li
@@ -39,22 +42,29 @@ public class RoleController extends BasicController {
         log.info(rolePage.getStartTime());
         log.info(rolePage.getEndTime());
         PageInfo<Role> pageInfo = roleService.getAll(rolePage);
-        return super.getApiResponseResponseEntity(pageInfo);
+        return super.executeApiResponseResponseEntity(pageInfo);
 
     }
 
-    @PostMapping(value = "/addRole")
+    @PostMapping(value = "/role/add")
     @RequiresRoles("admin")
-    public ResponseEntity<ApiResponse<String>> addRole(@RequestBody RoleSaveRequest roleSaveRequest) {
+    public ResponseEntity<ApiResponse<Void>> addRole(@RequestBody RoleSaveRequest roleSaveRequest) {
         roleService.addRole(roleSaveRequest);
-        return super.getApiResponseResponseEntity("");
+        return super.executeApiResponseResponseEntity(null);
     }
 
-    @PostMapping(value = "/updateRole")
+    @PostMapping(value = "/role/update")
     @RequiresRoles("admin")
-    public ResponseEntity<ApiResponse<String>> updateRole(@RequestBody RoleUpdateRequest roleUpdateRequest) {
+    public ResponseEntity<ApiResponse<Void>> updateRole(@RequestBody RoleUpdateRequest roleUpdateRequest) {
         roleService.updateRole(roleUpdateRequest);
-        return super.getApiResponseResponseEntity("");
+        return super.executeApiResponseResponseEntity(null);
+    }
+
+    @GetMapping(value = "/role/name/value")
+    @RequiresRoles("admin")
+    public ResponseEntity<ApiResponse<List<Role>>> getAllNameValue() {
+        List<Role> roleList = roleService.getAllRole();
+        return super.executeApiResponseResponseEntity(roleList);
     }
 
 }

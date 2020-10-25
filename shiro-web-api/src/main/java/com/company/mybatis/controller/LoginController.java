@@ -8,20 +8,16 @@ import com.company.mybatis.controller.request.LoginRequest;
 import com.company.mybatis.controller.response.LoginResponse;
 import com.company.mybatis.service.UserService;
 import com.company.mybatis.shiro.model.LoginUser;
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
@@ -55,30 +51,18 @@ public class LoginController extends BasicController {
                 .token(jwtToken)
                 .build();
         log.info("login success");
-        return super.getApiResponseResponseEntity(loginResponse);
-    }
-
-    @GetMapping(value = "/user/info")
-    @RequiresRoles("admin")
-    public ResponseEntity<ApiResponse<LoginResponse>> info(@RequestParam("token") String token) {
-
-        LoginResponse haha = LoginResponse.builder()
-                .name("haha")
-                .token(token)
-                .roles(Lists.newArrayList("admin"))
-                .build();
-        log.info("info success : " + token);
-        return super.getApiResponseResponseEntity(haha);
+        userService.updateLastLoginTimeAndLog(user);
+        return super.executeApiResponseResponseEntity(loginResponse);
     }
 
     @PostMapping(value = "/user/logout")
     public ResponseEntity<ApiResponse<LoginResponse>> logout() {
         LoginResponse haha = LoginResponse.builder()
-                .name("haha")
+                .name("")
                 .token(UUID.randomUUID().toString())
                 .build();
         log.info("logout success");
-        return super.getApiResponseResponseEntity(haha);
+        return super.executeApiResponseResponseEntity(haha);
     }
 
 }

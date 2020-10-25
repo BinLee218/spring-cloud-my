@@ -1,5 +1,8 @@
 package com.company.test;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.util.DigestUtils;
+
 import java.math.BigDecimal;
 
 /**
@@ -26,6 +29,13 @@ public class Test {
         BigDecimal bigDecimal = new BigDecimal("71");
         BigDecimal bigDecimal2 = new BigDecimal("622");
         System.out.println(bigDecimal.compareTo(bigDecimal2) > 0);
+
+        String pwd = "123456";
+        String salt = RandomStringUtils.randomAlphanumeric(20);
+        System.out.println(salt);
+        String password = salt + pwd + salt;
+        System.out.println(DigestUtils.md5DigestAsHex(password.getBytes()));
+
     }
 
     public String test11(String ss) {

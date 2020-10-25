@@ -56,4 +56,9 @@ public class RoleService {
         }
         throw AdminException.createRuntimeException(AdminExceptionEnum.NOT_ROLE_OBJECT_EXCEPTION);
     }
+
+    public List<Role> getAllRole() {
+        List<Role> roleList = roleDao.selectActiveAll();
+        return roleList;
+    }
 }

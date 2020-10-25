@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
  */
 public class BasicController {
 
-    public <T> ResponseEntity<ApiResponse<T>> getApiResponseResponseEntity(T haha) {
+    public <T> ResponseEntity<ApiResponse<T>> executeApiResponseResponseEntity(T response) {
         ApiResponse<T> apiResponse = new ApiResponse<>();
-        apiResponse.setData(haha);
+        apiResponse.setData(response);
         return ResponseEntity.ok(apiResponse);
     }
 }

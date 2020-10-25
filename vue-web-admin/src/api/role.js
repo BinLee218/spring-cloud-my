@@ -10,7 +10,7 @@ export function getAllRole(data) {
 
 export function addRole(data) {
   return request({
-    url: '/api/addRole',
+    url: '/api/role/add',
     method: 'post',
     data
   })
@@ -18,30 +18,15 @@ export function addRole(data) {
 
 export function updateRole(data) {
   return request({
-    url: '/api/updateRole',
+    url: '/api/role/update',
     method: 'post',
     data
   })
 }
 
-export function getRoutes() {
+export function getAllNameValue() {
   return request({
-    url: '/vue-element-admin/routes',
+    url: '/api/role/name/value',
     method: 'get'
-  })
-}
-export function getRoles() {
-  return request({
-    url: '/vue-element-admin/roles',
-    method: 'get'
-  })
-}
-
-
-
-export function deleteRole(id) {
-  return request({
-    url: `/vue-element-admin/role/${id}`,
-    method: 'delete'
   })
 }

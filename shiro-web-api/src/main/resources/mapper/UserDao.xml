@@ -16,7 +16,7 @@
         <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    user_id, relation_id, user_name, `password`, salt, real_name, `status`, create_time, 
+    user_id, relation_id, user_name, `password`, salt, real_name, `status`, create_time,
     update_time, create_by, update_by, last_login_time
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -32,13 +32,13 @@
   </delete>
     <insert id="insert" keyColumn="user_id" keyProperty="userId" parameterType="com.company.mybatis.pojo.User"
             useGeneratedKeys="true">
-    insert into user (relation_id, user_name, `password`, 
-      salt, real_name, `status`, 
-      create_time, update_time, create_by, 
+    insert into user (relation_id, user_name, `password`,
+      salt, real_name, `status`,
+      create_time, update_time, create_by,
       update_by, last_login_time)
-    values (#{relationId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{salt,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, 
+    values (#{relationId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{salt,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
       #{updateBy,jdbcType=INTEGER}, #{lastLoginTime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" parameterType="com.company.mybatis.pojo.User">
@@ -174,5 +174,21 @@
         <include refid="Base_Column_List"/>
         from user
         where user_name = #{userName,jdbcType=VARCHAR}
+    </select>
+    <select id="getAllByPage" resultType="com.company.mybatis.pojo.User" parameterType="com.company.mybatis.dto.UserPage">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        <where>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and startTime != ''">
+                and create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
     </select>
 </mapper>
