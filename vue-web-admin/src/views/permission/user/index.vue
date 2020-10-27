@@ -37,12 +37,17 @@
               {{computedStatusType(scope.row.status)}}
             </template>
           </el-table-column>
+          <el-table-column prop="roleId" label="角色">
+            <template slot-scope="scope">
+              {{computedRoleType(scope.row.roleId)}}
+            </template>
+          </el-table-column>
           <el-table-column prop="lastLoginTime" label="最后登录时间"></el-table-column>
           <el-table-column prop="createTime" label="创建时间"></el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
-              <el-button @click.native="showRole(scope.row)" type="text" size="small">查看</el-button>
-              <el-button type="text" size="small" @click.native="showUpdateUser(scope.row)" >编辑</el-button>
+              <el-button @click.native="showUser(scope.row)" type="text" size="small" >查看</el-button>
+              <el-button type="text" size="small" @click.native="showUpdateUser(scope.row)" v-permission="['admin']">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -76,6 +81,16 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="角色">
+          <el-select v-model="dialogAdd.form.roleValue" placeholder="请选择">
+            <el-option
+              v-for="item in tableDataRole"
+              :key="item.roleId"
+              :label="item.roleName"
+              :value="item.roleId">
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogAdd.dialogFormVisible = false">取 消</el-button>
@@ -104,6 +119,16 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="角色">
+          <el-select v-model="dialogUpdate.form.roleId" placeholder="请选择">
+            <el-option
+              v-for="item in tableDataRole"
+              :key="item.roleId"
+              :label="item.roleName"
+              :value="item.roleId">
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogUpdate.dialogFormVisible = false">取 消</el-button>
@@ -116,10 +141,10 @@
         <el-form-item label="主键ID">
           <el-input v-model="dialogUpdate.form.userId" autocomplete="off" disabled></el-input>
         </el-form-item>
-        <el-form-item label="角色名称">
+        <el-form-item label="登录名">
           <el-input v-model="dialogUpdate.form.userName" disabled></el-input>
         </el-form-item>
-        <el-form-item label="角色值">
+        <el-form-item label="真实姓名">
           <el-input v-model="dialogUpdate.form.realName" disabled></el-input>
         </el-form-item>
         <el-form-item label="状态">
@@ -132,6 +157,16 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="角色">
+          <el-select v-model="dialogUpdate.form.roleId" disabled placeholder="请选择">
+            <el-option
+              v-for="item in tableDataRole"
+              :key="item.roleId"
+              :label="item.roleName"
+              :value="item.roleId">
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
     </el-dialog>
   </div>
@@ -140,7 +175,10 @@
 <script>
 import { getAllUsers, updateUser, addUser } from '@/api/user'
 import { getAllNameValue } from '@/api/role'
+import checkPermission from '@/utils/permission'
+import permission from '@/directive/permission/index.js' // 权限判断指令
 export default {
+  directives: { permission },
   data() {
     return {
       formInline: {
@@ -191,7 +229,8 @@ export default {
           userId: '',
           userName: '',
           realName: '',
-          status: ''
+          status: '',
+          roleId: ''
         },
         dialogFormVisible: false,
         dialogShowVisible: false
@@ -200,7 +239,8 @@ export default {
         form: {
           userName: '',
           realName: '',
-          status: ''
+          status: '',
+          roleValue: ''
         },
         dialogAddFormVisible: false
       },
@@ -223,11 +263,11 @@ export default {
     getAllNameValue().then(response => {
       if (response.subCode === 20000) {
         this.tableDataRole = response.data
-        console.info(this.tableDataRole)
       }
     })
   },
   methods: {
+    checkPermission,
     getAllUsers() {
       const data = {
         pageNum: this.paginationData.currentPage,
@@ -271,13 +311,19 @@ export default {
       const data = {
         userName: this.dialogAdd.form.userName.trim(),
         realName: this.dialogAdd.form.realName.trim(),
-        status: this.dialogAdd.form.status
+        status: this.dialogAdd.form.status,
+        roleValue: this.dialogAdd.form.roleValue
       }
       addUser(data).then(response => {
         if (response.subCode === 20000) {
           this.$message.success('新增成功')
-          this.getAllUsers()
           this.dialogAdd.dialogAddFormVisible = false
+          this.getAllUsers()
+          // this.$router.push({ path: '/user/index' })
+          this.dialogAdd.form.userName = ''
+          this.dialogAdd.form.realName = ''
+          this.dialogAdd.form.status = ''
+          this.dialogAdd.form.roleValue = ''
         } else {
           this.$message('新增失败!')
         }
@@ -288,7 +334,8 @@ export default {
         userId: this.dialogUpdate.form.userId,
         userName: this.dialogUpdate.form.userName.trim(),
         realName: this.dialogUpdate.form.realName.trim(),
-        status: this.dialogUpdate.form.status
+        status: this.dialogUpdate.form.status,
+        roleId: this.dialogUpdate.form.roleId
       }
       updateUser(data).then(response => {
         if (response.subCode === 20000) {
@@ -305,13 +352,15 @@ export default {
       this.dialogUpdate.form.userName = data.userName
       this.dialogUpdate.form.realName = data.realName
       this.dialogUpdate.form.status = data.status
+      this.dialogUpdate.form.roleId = data.roleId
       this.dialogUpdate.dialogFormVisible = true
     },
-    showRole(data) {
+    showUser(data) {
       this.dialogUpdate.form.userId = data.userId
       this.dialogUpdate.form.userName = data.userName
       this.dialogUpdate.form.realName = data.realName
       this.dialogUpdate.form.status = data.status
+      this.dialogUpdate.form.roleId = data.roleId
       this.dialogUpdate.dialogShowVisible = true
     },
     computedStatusType(status) {
@@ -320,6 +369,15 @@ export default {
       }
       if (status === 1) {
         return '可用'
+      }
+    },
+    computedRoleType(roleId) {
+      // console.info(roleId)
+      // console.info(this.tableDataRole)
+      for (const role in this.tableDataRole) {
+        if (this.tableDataRole[role].roleId === roleId) {
+          return this.tableDataRole[role].roleName
+        }
       }
     },
     showAddUser() {

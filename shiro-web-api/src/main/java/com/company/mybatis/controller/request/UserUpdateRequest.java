@@ -23,4 +23,6 @@ public class UserUpdateRequest {
     private String realName;
     @NotBlank
     private Integer status;
+    @NotBlank
+    private Integer roleId;
 }

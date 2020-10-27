@@ -19,4 +19,7 @@ public interface UserRoleDao {
     int updateByPrimaryKey(UserRole record);
 
     Integer findRoleByUserId(@Param("userId") Integer userId);
+
+    UserRole findByUserId(@Param("userId") Integer userId);
+
 }

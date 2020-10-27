@@ -86,7 +86,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'auth',
-        component: () => import('@/views/permission/auth'),
+        component: () => import('@/views/permission/auth/auth'),
         name: 'AuthPermission',
         meta: {
           title: '权限管理',

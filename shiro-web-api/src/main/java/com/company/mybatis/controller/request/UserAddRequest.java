@@ -21,4 +21,6 @@ public class UserAddRequest {
     private String realName;
     @NotBlank
     private Integer status;
+    @NotBlank
+    private Integer roleValue;
 }

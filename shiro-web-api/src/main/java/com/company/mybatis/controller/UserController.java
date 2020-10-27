@@ -44,7 +44,7 @@ public class UserController extends BasicController {
     @RequestMapping(value = "/user/register")
     @RequiresRoles("admin")
     public ResponseEntity<UserResponse> register(@RequestBody @Validated UserRegisterRequest userRegisterRequest){
-        userService.register(userRegisterRequest.getUserName(), userRegisterRequest.getRealName(), userRegisterRequest.getPassword());
+        userService.register(userRegisterRequest.getUserName(), userRegisterRequest.getRealName(), userRegisterRequest.getPassword(), 1);
         return ResponseEntity.ok(UserResponse.builder().build());
     }
 
@@ -77,9 +77,11 @@ public class UserController extends BasicController {
         userService.updateUser(userUpdateRequest);
         return super.executeApiResponseResponseEntity(null);
     }
+
     @PostMapping(value = "/user/add")
     @RequiresRoles("admin")
     public ResponseEntity<ApiResponse<Void>> addUser(@RequestBody UserAddRequest userAddRequest) {
+        log.info(""+userAddRequest.getRoleValue());
         userService.addUser(userAddRequest);
         return super.executeApiResponseResponseEntity(null);
     }

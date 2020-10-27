@@ -29,6 +29,5 @@ public class HomeTest {
 
     @Test
     public void testRegist(){
-        userService.register("libin123", "李斌123", "libin123");
     }
 }
