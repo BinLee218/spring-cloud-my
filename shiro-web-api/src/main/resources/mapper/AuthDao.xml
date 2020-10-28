@@ -8,15 +8,14 @@
     <result column="state" jdbcType="TINYINT" property="state" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="path" jdbcType="VARCHAR" property="path" />
-    <result column="root" jdbcType="INTEGER" property="root" />
+    <result column="app_id" jdbcType="INTEGER" property="appId" />
 
   </resultMap>
   <sql id="Base_Column_List">
-    auth_id, auth_name, auth_value, `state`, create_time, update_time, path, root
+    auth_id, auth_name, auth_value, `state`, create_time, update_time, app_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from auth
     where auth_id = #{authId,jdbcType=INTEGER}
@@ -26,12 +25,6 @@
     delete from auth
     where auth_id = #{authId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="auth_id" keyProperty="authId" parameterType="com.company.mybatis.pojo.Auth" useGeneratedKeys="true">
-    insert into auth (auth_name, auth_value, `state`, 
-      create_time, update_time)
-    values (#{authName,jdbcType=VARCHAR}, #{authValue,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
   <insert id="insertSelective" keyColumn="auth_id" keyProperty="authId" parameterType="com.company.mybatis.pojo.Auth" useGeneratedKeys="true">
     insert into auth
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -50,6 +43,9 @@
       <if test="updateTime != null">
         update_time,
       </if>
+      <if test="appId != null">
+        app_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="authName != null">
@@ -66,6 +62,9 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -87,16 +86,10 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="appId != null">
+        app_id = #{appId,jdbcType=INTEGER},
+      </if>
     </set>
-    where auth_id = #{authId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.mybatis.pojo.Auth">
-    update auth
-    set auth_name = #{authName,jdbcType=VARCHAR},
-      auth_value = #{authValue,jdbcType=VARCHAR},
-      `state` = #{state,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where auth_id = #{authId,jdbcType=INTEGER}
   </update>
 
@@ -105,10 +98,9 @@
     <include refid="Base_Column_List" />
     from auth
     where auth_id in
-    <foreach item="item" index="index" collection="roleAuthIds" open="(" separator="," close=")">
+    <foreach item="item" index="index" collection="authIds" open="(" separator="," close=")">
       #{item}
     </foreach>
-    and `root` = 1
   </select>
   <select id="findChildrenById" resultType="com.company.mybatis.pojo.Auth">
     select
@@ -124,5 +116,11 @@
     <foreach item="item" index="index" collection="roleAuthIds" open="(" separator="," close=")">
       #{item}
     </foreach>
+  </select>
+  <select id="findAuthByAppId" resultType="com.company.mybatis.pojo.Auth">
+    select
+    <include refid="Base_Column_List" />
+    from auth
+    where app_id = #{appId,jdbcType=INTEGER}
   </select>
 </mapper>

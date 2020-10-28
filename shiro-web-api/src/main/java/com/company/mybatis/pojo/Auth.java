@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * auth
- * @author 
+ * @author
  */
 @Data
 public class Auth implements Serializable {
@@ -41,9 +41,7 @@ public class Auth implements Serializable {
      */
     private Date updateTime;
 
-    private String path;
-
-    private Integer root;
+    private Integer appId;
 
     private static final long serialVersionUID = 1L;
 }

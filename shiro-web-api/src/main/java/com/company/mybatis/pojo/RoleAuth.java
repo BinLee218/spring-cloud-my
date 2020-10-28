@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * role_auth
- * @author 
+ * @author
  */
 @Data
 public class RoleAuth implements Serializable {
@@ -14,7 +14,7 @@ public class RoleAuth implements Serializable {
 
     private Integer roleId;
 
-    private Integer authId;
+    private String authValue;
 
     private static final long serialVersionUID = 1L;
 }

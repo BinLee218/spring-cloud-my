@@ -1,3 +1,4 @@
+import path from "path";
 <template>
   <div class="app-container">
     <el-container>
@@ -31,7 +32,7 @@
             <el-button type="primary" @click="addRole">添加</el-button>
           </el-form-item>
         </el-form>
-        <el-table :data="tableData" border stripe style="width: 100%; border-radius: 4px" :row-class-name="tableRowClassName">
+        <el-table :data="tableData" border stripe style="width: 100%; border-radius: 4px" >
           <el-table-column prop="roleId" label="主键ID" width="180"></el-table-column>
           <el-table-column prop="roleName" label="角色名" width="180"></el-table-column>
           <el-table-column prop="roleValue" label="角色值"></el-table-column>
@@ -81,6 +82,20 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="Menus">
+<!--          <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />-->
+          <el-tree
+            class="permission-tree"
+            :data="el_treeData"
+            show-checkbox
+            default-expand-all
+            node-key="id"
+            ref="tree"
+            highlight-current
+            :props="defaultProps"
+          >
+          </el-tree>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogUpdate.dialogFormVisible = false">取 消</el-button>
@@ -116,10 +131,15 @@
 
 <script>
 import { getAllRole, updateRole } from '@/api/role'
-
+import { AuthTree } from '@/api/auth'
 export default {
   data() {
     return {
+      el_treeData: [],
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      },
       formInline: {
         roleName: '',
         roleValue: '',
@@ -186,7 +206,14 @@ export default {
       ]
     }
   },
+  computed: {
+    routesData() {
+      console.info(2)
+      return this.routes
+    }
+  },
   mounted() {
+    console.info(1)
     this.getAllRoles()
   },
   methods: {
@@ -199,8 +226,8 @@ export default {
         startTime: this.formInline.timeRange[0],
         endTime: this.formInline.timeRange[1]
       }
-      console.info(data.startTime)
-      console.info(data.endTime)
+      // console.info(data.startTime)
+      // console.info(data.endTime)
       getAllRole(data).then(response => {
         if (response.subCode === 20000) {
           this.tableData = response.data.list
@@ -210,14 +237,6 @@ export default {
           // this.paginationData.pageSize = response.data.pageSize
         }
       })
-    },
-    tableRowClassName({ row, rowIndex }) {
-      if (rowIndex === 1) {
-        return 'warning-row'
-      } else if (rowIndex === 3) {
-        return 'success-row'
-      }
-      return ''
     },
     roleSearch() {
       this.getAllRoles()
@@ -234,6 +253,7 @@ export default {
       this.$router.push({ path: '/role/addRole' })
     },
     updateRole() {
+      console.log(this.$refs.tree.getCheckedKeys())
       const data = {
         roleId: this.dialogUpdate.form.roleId,
         roleName: this.dialogUpdate.form.roleName.trim(),
@@ -256,6 +276,12 @@ export default {
       this.dialogUpdate.form.roleValue = data.roleValue
       this.dialogUpdate.form.state = data.state
       this.dialogUpdate.dialogFormVisible = true
+      AuthTree({ roleId: data.roleId }).then(response => {
+        if (response.subCode === 20000) {
+          console.info(response)
+          this.el_treeData = response.data.auths
+        }
+      })
     },
     showRole(data) {
       this.dialogUpdate.form.roleId = data.roleId

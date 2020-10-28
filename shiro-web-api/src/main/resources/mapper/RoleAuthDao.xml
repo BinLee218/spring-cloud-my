@@ -4,13 +4,13 @@
   <resultMap id="BaseResultMap" type="com.company.mybatis.pojo.RoleAuth">
     <id column="r_a_id" jdbcType="INTEGER" property="rAId" />
     <result column="role_id" jdbcType="INTEGER" property="roleId" />
-    <result column="auth_id" jdbcType="INTEGER" property="authId" />
+    <result column="auth_value" jdbcType="VARCHAR" property="authValue" />
   </resultMap>
   <sql id="Base_Column_List">
-    r_a_id, role_id, auth_id
+    r_a_id, role_id, auth_value
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from role_auth
     where r_a_id = #{rAId,jdbcType=INTEGER}
@@ -20,26 +20,22 @@
     delete from role_auth
     where r_a_id = #{rAId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="r_a_id" keyProperty="rAId" parameterType="com.company.mybatis.pojo.RoleAuth" useGeneratedKeys="true">
-    insert into role_auth (role_id, auth_id)
-    values (#{roleId,jdbcType=INTEGER}, #{authId,jdbcType=INTEGER})
-  </insert>
   <insert id="insertSelective" keyColumn="r_a_id" keyProperty="rAId" parameterType="com.company.mybatis.pojo.RoleAuth" useGeneratedKeys="true">
     insert into role_auth
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="roleId != null">
         role_id,
       </if>
-      <if test="authId != null">
-        auth_id,
+      <if test="authValue != null">
+        auth_value,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="roleId != null">
         #{roleId,jdbcType=INTEGER},
       </if>
-      <if test="authId != null">
-        #{authId,jdbcType=INTEGER},
+      <if test="authValue != null">
+        #{authValue,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -49,22 +45,15 @@
       <if test="roleId != null">
         role_id = #{roleId,jdbcType=INTEGER},
       </if>
-      <if test="authId != null">
-        auth_id = #{authId,jdbcType=INTEGER},
+      <if test="authValue != null">
+        auth_value = #{authValue,jdbcType=VARCHAR},
       </if>
     </set>
     where r_a_id = #{rAId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.company.mybatis.pojo.RoleAuth">
-    update role_auth
-    set role_id = #{roleId,jdbcType=INTEGER},
-      auth_id = #{authId,jdbcType=INTEGER}
-    where r_a_id = #{rAId,jdbcType=INTEGER}
-  </update>
-
   <select id="findAuthByRoleId" resultType="java.lang.Integer">
     select
-        auth_id
+        auth_value
     from role_auth
     where role_id = #{roleId,jdbcType=INTEGER}
   </select>

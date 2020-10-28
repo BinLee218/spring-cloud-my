@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.mybatis.dao.ApplicationsDao">
+  <resultMap id="BaseResultMap" type="com.company.mybatis.pojo.Applications">
+    <id column="app_id" jdbcType="INTEGER" property="appId" />
+    <result column="app_name" jdbcType="VARCHAR" property="appName" />
+    <result column="app_desc" jdbcType="VARCHAR" property="appDesc" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    app_id, app_name, app_desc, created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from applications
+    where app_id = #{appId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from applications
+    where app_id = #{appId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" keyColumn="app_id" keyProperty="appId" parameterType="com.company.mybatis.pojo.Applications" useGeneratedKeys="true">
+    insert into applications
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="appName != null">
+        app_name,
+      </if>
+      <if test="appDesc != null">
+        app_desc,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="appName != null">
+        #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="appDesc != null">
+        #{appDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.company.mybatis.pojo.Applications">
+    update applications
+    <set>
+      <if test="appName != null">
+        app_name = #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="appDesc != null">
+        app_desc = #{appDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where app_id = #{appId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAll" resultType="com.company.mybatis.pojo.Applications">
+    select
+    <include refid="Base_Column_List" />
+    from applications
+  </select>
+</mapper>
