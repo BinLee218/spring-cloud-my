@@ -19,12 +19,8 @@ public class AuthService {
     private AuthDao authDao;
 
 
-    public List<Auth> findAuthByIds(List<Integer> authIds) {
+    public List<Auth> findAuthByValues(List<String> authIds) {
         return authDao.findAuthByIds(authIds);
-    }
-
-    public List<Auth> findChildrenById(Integer authId) {
-        return authDao.findChildrenById(authId);
     }
 
     public List<Auth> findAllAuthByIds(List<Integer> roleAuthIds) {

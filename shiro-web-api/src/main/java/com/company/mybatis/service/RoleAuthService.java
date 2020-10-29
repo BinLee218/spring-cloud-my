@@ -1,6 +1,7 @@
 package com.company.mybatis.service;
 
 import com.company.mybatis.dao.RoleAuthDao;
+import com.company.mybatis.pojo.Auth;
 import com.company.mybatis.pojo.RoleAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,19 @@ public class RoleAuthService {
     private RoleAuthDao roleAuthDao;
 
 
-    public List<Integer> findAuthByRoleId(Integer roleId) {
+    public List<String> findAuthByRoleId(Integer roleId) {
         return roleAuthDao.findAuthByRoleId(roleId);
     }
 
-    public List<Integer> findAllAuthByRoleId(Integer roleId) {
-        return roleAuthDao.findAllAuthByRoleId(roleId);
+    public List<Auth> findByRoleId(Integer roleId) {
+        return roleAuthDao.findByRoleId(roleId);
+    }
+
+    public void deleteRoleAuthByRoleId(Integer roleId) {
+        roleAuthDao.deleteRoleAuthByRoleId(roleId);
+    }
+
+    public void insertRoleAuth(RoleAuth roleAuth) {
+        roleAuthDao.insertSelective(roleAuth);
     }
 }

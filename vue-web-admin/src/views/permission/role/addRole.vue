@@ -20,6 +20,19 @@
           <el-option label="不可用" value="0" />
         </el-select>
       </el-form-item>
+      <el-form-item label="权限配置">
+        <el-tree
+          class="permission-tree"
+          :data="el_treeData"
+          show-checkbox
+          default-expand-all
+          node-key="id"
+          ref="tree"
+          highlight-current
+          :props="defaultProps"
+        >
+        </el-tree>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">Create</el-button>
       </el-form-item>
@@ -29,10 +42,16 @@
 
 <script>
 import { addRole } from '@/api/role'
+import { AuthTreeWithoutRole } from '@/api/auth'
 
 export default {
   data() {
     return {
+      el_treeData: [],
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      },
       form: {
         roleName: '',
         roleValue: '',
@@ -40,12 +59,23 @@ export default {
       }
     }
   },
+  mounted() {
+    this.authTreeWithoutRole()
+  },
   methods: {
+    authTreeWithoutRole() {
+      AuthTreeWithoutRole().then(response => {
+        if (response.subCode === 20000) {
+          this.el_treeData = response.data.auths
+        }
+      })
+    },
     onSubmit() {
       const data = {
         roleName: this.form.roleName.trim(),
         roleValue: this.form.roleValue.trim(),
-        state: this.form.state.trim()
+        state: this.form.state.trim(),
+        treeValue: this.$refs.tree.getCheckedKeys()
       }
       addRole(data).then(response => {
         console.info(response)

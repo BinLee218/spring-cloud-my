@@ -22,7 +22,7 @@
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from roles where role_id = #{roleId,jdbcType=INTEGER}
     </delete>
-    <insert id="insertSelective" parameterType="com.company.mybatis.pojo.Role">
+    <insert id="insertSelective" parameterType="com.company.mybatis.pojo.Role" useGeneratedKeys="true" keyColumn="role_id" keyProperty="roleId">
         insert into roles
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="roleName != null">

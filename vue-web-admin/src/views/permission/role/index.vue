@@ -82,8 +82,7 @@ import path from "path";
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Menus">
-<!--          <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />-->
+        <el-form-item label="权限配置">
           <el-tree
             class="permission-tree"
             :data="el_treeData"
@@ -130,8 +129,8 @@ import path from "path";
 </template>
 
 <script>
-import { getAllRole, updateRole } from '@/api/role'
-import { AuthTree } from '@/api/auth'
+import { getAllRole, updateRole, rolePermissions } from '@/api/role'
+import { AuthTreeWithoutRole } from '@/api/auth'
 export default {
   data() {
     return {
@@ -258,7 +257,8 @@ export default {
         roleId: this.dialogUpdate.form.roleId,
         roleName: this.dialogUpdate.form.roleName.trim(),
         roleValue: this.dialogUpdate.form.roleValue.trim(),
-        state: this.dialogUpdate.form.state
+        state: this.dialogUpdate.form.state,
+        treeValue: this.$refs.tree.getCheckedKeys()
       }
       updateRole(data).then(response => {
         if (response.subCode === 20000) {
@@ -276,10 +276,15 @@ export default {
       this.dialogUpdate.form.roleValue = data.roleValue
       this.dialogUpdate.form.state = data.state
       this.dialogUpdate.dialogFormVisible = true
-      AuthTree({ roleId: data.roleId }).then(response => {
+      AuthTreeWithoutRole().then(response => {
         if (response.subCode === 20000) {
-          console.info(response)
           this.el_treeData = response.data.auths
+        }
+      })
+      rolePermissions({ roleId: data.roleId }).then(response => {
+        if (response.subCode === 20000) {
+          console.info(response.data)
+          this.$refs.tree.setCheckedKeys(response.data)
         }
       })
     },

@@ -16,7 +16,7 @@ public interface AuthDao {
 
     int updateByPrimaryKeySelective(Auth record);
 
-    List<Auth> findAuthByIds(@Param("authIds") List<Integer> authIds);
+    List<Auth> findAuthByIds(@Param("authValues") List<String> authValues);
 
     List<Auth> findChildrenById(@Param("authId")Integer authId);
 

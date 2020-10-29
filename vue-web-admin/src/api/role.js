@@ -30,3 +30,11 @@ export function getAllNameValue() {
     method: 'get'
   })
 }
+
+export function rolePermissions(data) {
+  return request({
+    url: '/api/role/permissions',
+    method: 'post',
+    data
+  })
+}

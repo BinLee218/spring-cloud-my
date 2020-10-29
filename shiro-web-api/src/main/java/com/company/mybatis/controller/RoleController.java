@@ -5,7 +5,10 @@ import com.company.mybatis.commons.BasicController;
 import com.company.mybatis.controller.request.RoleRequest;
 import com.company.mybatis.controller.request.RoleSaveRequest;
 import com.company.mybatis.controller.request.RoleUpdateRequest;
+import com.company.mybatis.controller.response.AuthRoleResponse;
 import com.company.mybatis.dto.RolePage;
+import com.company.mybatis.dto.result.RolePermission;
+import com.company.mybatis.facade.HomeFacadeService;
 import com.company.mybatis.pojo.Role;
 import com.company.mybatis.service.RoleService;
 import com.github.pagehelper.PageInfo;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author bin.li
@@ -34,6 +38,9 @@ public class RoleController extends BasicController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private HomeFacadeService homeFacadeService;
+
     @PostMapping(value = "/roles")
     @RequiresRoles("admin")
     public ResponseEntity<ApiResponse<PageInfo<Role>>> getAllRoles(@RequestBody RoleRequest roleRequest) throws Exception {
@@ -43,7 +50,6 @@ public class RoleController extends BasicController {
         log.info(rolePage.getEndTime());
         PageInfo<Role> pageInfo = roleService.getAll(rolePage);
         return super.executeApiResponseResponseEntity(pageInfo);
-
     }
 
     @PostMapping(value = "/role/add")
@@ -65,6 +71,13 @@ public class RoleController extends BasicController {
     public ResponseEntity<ApiResponse<List<Role>>> getAllNameValue() {
         List<Role> roleList = roleService.getAllRole();
         return super.executeApiResponseResponseEntity(roleList);
+    }
+
+    @PostMapping(value = "/role/permissions")
+    @RequiresRoles("admin")
+    public ResponseEntity<ApiResponse<List<String>>> rolePermissions(@RequestBody Map<String, Integer> roleId) {
+        List<String> rolePermissions = homeFacadeService.getAuthByRoleId(roleId.get("roleId"));
+        return super.executeApiResponseResponseEntity(rolePermissions);
     }
 
 }

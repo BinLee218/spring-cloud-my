@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * @author bin.li
@@ -23,4 +24,6 @@ public class RoleUpdateRequest {
     private String roleValue;
     @NotBlank
     private Integer state;
+    @NotBlank
+    private List<String> treeValue;
 }

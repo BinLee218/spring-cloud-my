@@ -11,14 +11,11 @@ import com.company.mybatis.service.RoleService;
 import com.company.mybatis.service.UserRoleService;
 import com.company.mybatis.service.UserService;
 import com.google.common.collect.Lists;
-import com.google.j2objc.annotations.AutoreleasePool;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -41,10 +38,13 @@ public class HomeFacadeService {
     @Autowired
     private ApplicationsService applicationsService;
 
-    public List<RolePermission> getAuthByRoleId(Integer roleId) {
+    public List<String> getAuthByRoleId(Integer roleId) {
         Role role = roleService.selectByPrimaryKey(roleId);
-        List<Integer> authIdList = roleAuthService.findAuthByRoleId(role.getRoleId());
-        List<Auth> authByIds = authService.findAuthByIds(authIdList);
+        List<String> authValueList = roleAuthService.findAuthByRoleId(role.getRoleId());
+        return authValueList;
+    }
+
+    public List<RolePermission> getAuthWithoutRole() {
         List<RolePermission> rolePermissions = Lists.newArrayList();
         List<Applications> applications = applicationsService.selectAll();
         for (Applications application : applications) {

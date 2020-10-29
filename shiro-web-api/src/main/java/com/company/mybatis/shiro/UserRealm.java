@@ -82,8 +82,8 @@ public class UserRealm extends AuthorizingRealm {
         if (innerUser != null) {
             Integer roleId = userRoleService.findRoleByUserId(innerUser.getId());
             Role role = roleService.selectByPrimaryKey(roleId);
-            List<Integer> roleAuthIds = roleAuthService.findAuthByRoleId(role.getRoleId());
-            List<Auth> auths = authService.findAllAuthByIds(roleAuthIds);
+            List<String> roleAuthValues = roleAuthService.findAuthByRoleId(role.getRoleId());
+            List<Auth> auths = authService.findAuthByValues(roleAuthValues);
             SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
             Set<String> collect = Stream.<String>builder().add(role.getRoleValue()).build().collect(Collectors.toSet());
             authorizationInfo.setRoles(collect);

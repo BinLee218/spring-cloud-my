@@ -97,8 +97,8 @@
     select
     <include refid="Base_Column_List" />
     from auth
-    where auth_id in
-    <foreach item="item" index="index" collection="authIds" open="(" separator="," close=")">
+    where auth_value in
+    <foreach item="item" index="index" collection="authValues" open="(" separator="," close=")">
       #{item}
     </foreach>
   </select>

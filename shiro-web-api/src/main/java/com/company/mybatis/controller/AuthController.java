@@ -21,6 +21,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,10 +42,9 @@ public class AuthController extends BasicController {
     @Autowired
     private HomeFacadeService homeFacadeService;
 
-    @PostMapping(value = "/auth/byRole")
-    public ResponseEntity<ApiResponse<AuthRoleResponse>> authByRole(@RequestBody @Validated AuthRoleRequest authRoleRequest) {
-        Integer roleId = authRoleRequest.getRoleId();
-        List<RolePermission> auths = homeFacadeService.getAuthByRoleId(roleId);
+    @GetMapping(value = "/auth/without/role")
+    public ResponseEntity<ApiResponse<AuthRoleResponse>> authWithoutRole() {
+        List<RolePermission> auths = homeFacadeService.getAuthWithoutRole();
         return super.executeApiResponseResponseEntity(AuthRoleResponse.builder().auths(auths).build());
     }
 
