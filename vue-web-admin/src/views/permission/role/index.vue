@@ -29,7 +29,7 @@ import path from "path";
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="roleSearch">查询</el-button>
-            <el-button type="primary" @click="addRole">添加</el-button>
+            <el-button type="primary" @click="addRole" v-permission="['110']">添加</el-button>
           </el-form-item>
         </el-form>
         <el-table :data="tableData" border stripe style="width: 100%; border-radius: 4px" >
@@ -45,7 +45,7 @@ import path from "path";
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
               <el-button @click.native="showRole(scope.row)" type="text" size="small">查看</el-button>
-              <el-button type="text" size="small" v-if="scope.row.roleValue!='admin'" @click.native="showUpdateRole(scope.row)">编辑</el-button>
+              <el-button type="text" size="small"  @click.native="showUpdateRole(scope.row)" v-permission="['111']">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -131,6 +131,8 @@ import path from "path";
 <script>
 import { getAllRole, updateRole, rolePermissions } from '@/api/role'
 import { AuthTreeWithoutRole } from '@/api/auth'
+import checkPermission from '@/utils/permission'
+
 export default {
   data() {
     return {
@@ -216,6 +218,7 @@ export default {
     this.getAllRoles()
   },
   methods: {
+    checkPermission,
     getAllRoles() {
       const data = {
         pageNum: this.paginationData.currentPage,

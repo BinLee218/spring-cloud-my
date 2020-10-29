@@ -62,4 +62,10 @@ public class HomeFacadeService {
         return rolePermissions;
     }
 
+    public List<String> selectUserAuthValue(Integer userId) {
+        Integer roleId = userRoleService.findRoleByUserId(userId);
+        Role role = roleService.selectByPrimaryKey(roleId);
+        List<String> roleAuthValues = roleAuthService.findAuthByRoleId(role.getRoleId());
+        return roleAuthValues;
+    }
 }

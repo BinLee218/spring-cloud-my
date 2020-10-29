@@ -1,5 +1,6 @@
 package com.company.mybatis.dao;
 
+import com.company.mybatis.dto.AuthPage;
 import com.company.mybatis.pojo.Auth;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,6 @@ public interface AuthDao {
     List<Auth> findAllAuthByIds(@Param("roleAuthIds") List<Integer> roleAuthIds);
 
     List<Auth> findAuthByAppId(@Param("appId") Integer appId);
+
+    List<Auth> getAllByPage(AuthPage authPage);
 }

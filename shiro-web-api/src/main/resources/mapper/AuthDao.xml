@@ -123,4 +123,20 @@
     from auth
     where app_id = #{appId,jdbcType=INTEGER}
   </select>
+  <select id="getAllByPage" resultType="com.company.mybatis.pojo.Auth" parameterType="com.company.mybatis.dto.AuthPage">
+    select
+    <include refid="Base_Column_List" />
+    from auth
+    <where>
+      <if test="authName != null and authName != ''">
+        and auth_name = #{authName,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        and create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        and create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
 </mapper>

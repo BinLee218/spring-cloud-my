@@ -25,7 +25,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="search">查询</el-button>
-            <el-button type="primary" @click="showAddUser">添加</el-button>
+            <el-button type="primary" @click="showAddUser" v-permission="['106']">添加</el-button>
           </el-form-item>
         </el-form>
         <el-table :data="tableData" border stripe style="width: 100%; border-radius: 4px" :row-class-name="tableRowClassName">
@@ -47,7 +47,7 @@
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
               <el-button @click.native="showUser(scope.row)" type="text" size="small" >查看</el-button>
-              <el-button type="text" size="small" @click.native="showUpdateUser(scope.row)" v-permission="['admin']">编辑</el-button>
+              <el-button type="text" size="small" @click.native="showUpdateUser(scope.row)" v-permission="['109']">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>

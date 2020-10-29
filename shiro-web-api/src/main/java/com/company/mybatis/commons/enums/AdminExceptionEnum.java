@@ -11,6 +11,7 @@ public enum AdminExceptionEnum {
 
     NOT_ROLE_OBJECT_EXCEPTION(50000, "角色信息不存在"),
     NOT_USER_OBJECT_EXCEPTION(50001, "用户信息不存在"),
+    SUBJECT_NOT_HAVE_ROLE_EXCEPTION(50002, "您没有权限"),
     LOGIN_ERROR_EXCEPTION(40001, "登录失败，用户/密码错误"),
     ;
 

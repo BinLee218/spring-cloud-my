@@ -9,6 +9,8 @@ import com.company.mybatis.controller.request.UserUpdateRequest;
 import com.company.mybatis.controller.response.LoginResponse;
 import com.company.mybatis.controller.response.UserResponse;
 import com.company.mybatis.dto.UserPage;
+import com.company.mybatis.facade.HomeFacadeService;
+import com.company.mybatis.pojo.Role;
 import com.company.mybatis.pojo.User;
 import com.company.mybatis.service.UserService;
 import com.company.mybatis.shiro.model.LoginUser;
@@ -17,6 +19,7 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author bin.li
@@ -41,29 +46,33 @@ public class UserController extends BasicController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private HomeFacadeService homeFacadeService;
+
     @RequestMapping(value = "/user/register")
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin", "operator"}, logical = Logical.OR)
     public ResponseEntity<UserResponse> register(@RequestBody @Validated UserRegisterRequest userRegisterRequest){
         userService.register(userRegisterRequest.getUserName(), userRegisterRequest.getRealName(), userRegisterRequest.getPassword(), 1);
         return ResponseEntity.ok(UserResponse.builder().build());
     }
 
     @GetMapping(value = "/user/info")
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin", "operator"}, logical = Logical.OR)
     public ResponseEntity<ApiResponse<LoginResponse>> info(@RequestParam("token") String token) {
         Subject subject = SecurityUtils.getSubject();
         LoginUser loginUser = (LoginUser)subject.getPrincipal();
+        List<String> auths = homeFacadeService.selectUserAuthValue(loginUser.getId());
         LoginResponse haha = LoginResponse.builder()
                 .name(loginUser.getUserName())
                 .token(token)
-                .roles(Lists.newArrayList("admin"))
+                .roles(auths)
                 .build();
         log.info("info success : " + token);
         return super.executeApiResponseResponseEntity(haha);
     }
 
     @RequestMapping(value = "/users")
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin", "operator"}, logical = Logical.OR)
     public ResponseEntity<ApiResponse<PageInfo<User>>> getAllUsers(@RequestBody @Validated UserRequest userRequest) throws Exception {
         UserPage userPage = new UserPage();
         BeanUtils.copyProperties(userPage, userRequest);
@@ -72,14 +81,14 @@ public class UserController extends BasicController {
     }
 
     @PostMapping(value = "/user/update")
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin", "operator"}, logical = Logical.OR)
     public ResponseEntity<ApiResponse<Void>> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
         userService.updateUser(userUpdateRequest);
         return super.executeApiResponseResponseEntity(null);
     }
 
     @PostMapping(value = "/user/add")
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin", "operator"}, logical = Logical.OR)
     public ResponseEntity<ApiResponse<Void>> addUser(@RequestBody UserAddRequest userAddRequest) {
         log.info(""+userAddRequest.getRoleValue());
         userService.addUser(userAddRequest);

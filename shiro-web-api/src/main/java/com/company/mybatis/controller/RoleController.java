@@ -14,6 +14,7 @@ import com.company.mybatis.service.RoleService;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class RoleController extends BasicController {
     private HomeFacadeService homeFacadeService;
 
     @PostMapping(value = "/roles")
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin", "operator"}, logical = Logical.OR)
     public ResponseEntity<ApiResponse<PageInfo<Role>>> getAllRoles(@RequestBody RoleRequest roleRequest) throws Exception {
         RolePage rolePage = new RolePage();
         BeanUtils.copyProperties(rolePage, roleRequest);
@@ -53,28 +54,28 @@ public class RoleController extends BasicController {
     }
 
     @PostMapping(value = "/role/add")
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin", "operator"}, logical = Logical.OR)
     public ResponseEntity<ApiResponse<Void>> addRole(@RequestBody RoleSaveRequest roleSaveRequest) {
         roleService.addRole(roleSaveRequest);
         return super.executeApiResponseResponseEntity(null);
     }
 
     @PostMapping(value = "/role/update")
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin", "operator"}, logical = Logical.OR)
     public ResponseEntity<ApiResponse<Void>> updateRole(@RequestBody RoleUpdateRequest roleUpdateRequest) {
         roleService.updateRole(roleUpdateRequest);
         return super.executeApiResponseResponseEntity(null);
     }
 
     @GetMapping(value = "/role/name/value")
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin", "operator"}, logical = Logical.OR)
     public ResponseEntity<ApiResponse<List<Role>>> getAllNameValue() {
         List<Role> roleList = roleService.getAllRole();
         return super.executeApiResponseResponseEntity(roleList);
     }
 
     @PostMapping(value = "/role/permissions")
-    @RequiresRoles("admin")
+    @RequiresRoles(value = {"admin", "operator"}, logical = Logical.OR)
     public ResponseEntity<ApiResponse<List<String>>> rolePermissions(@RequestBody Map<String, Integer> roleId) {
         List<String> rolePermissions = homeFacadeService.getAuthByRoleId(roleId.get("roleId"));
         return super.executeApiResponseResponseEntity(rolePermissions);

@@ -41,8 +41,10 @@ export const constantRoutes = [
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
-  },
+  }
+]
 
+export const asyncRoutes = [
   {
     path: '/',
     component: Layout,
@@ -51,12 +53,9 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '首页', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard', roles: ['100'] }
     }]
-  }
-]
-
-export const asyncRoutes = [
+  },
   {
     path: '/user',
     component: Layout,
@@ -68,7 +67,7 @@ export const asyncRoutes = [
       meta: {
         title: '用户管理',
         icon: 'user',
-        roles: ['admin'] // you can set roles in root nav
+        roles: ['101'] // you can set roles in root nav
       }
     }]
   },
@@ -81,7 +80,7 @@ export const asyncRoutes = [
     meta: {
       title: '角色权限管理',
       icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
+      roles: ['102'] // you can set roles in root nav
     },
     children: [
       {
@@ -90,7 +89,7 @@ export const asyncRoutes = [
         name: 'AuthPermission',
         meta: {
           title: '权限管理',
-          roles: ['admin'] // or you can only set roles in sub nav
+          roles: ['104'] // or you can only set roles in sub nav
         }
       },
       {
@@ -99,7 +98,7 @@ export const asyncRoutes = [
         name: 'RolePermission',
         meta: {
           title: '角色管理',
-          roles: ['admin']
+          roles: ['103']
         }
       }
     ]

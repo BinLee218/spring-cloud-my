@@ -102,7 +102,7 @@
             <if test="startTime != null and startTime != ''">
                 and create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
             </if>
-            <if test="endTime != null and startTime != ''">
+            <if test="endTime != null and endTime != ''">
                 and create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
             </if>
         </where>

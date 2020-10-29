@@ -2,8 +2,12 @@ package com.company.mybatis.aop;
 
 import com.company.mybatis.commons.ApiResponse;
 import com.company.mybatis.commons.adminException.AdminException;
+import com.company.mybatis.commons.enums.AdminExceptionEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.shiro.ShiroException;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -29,10 +33,25 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value=Exception.class)
     public Object handleException(Exception e, HttpServletRequest request) {
-        log.error("AvatecExceptionHandler:{},url:{}", e.getMessage(), request.getRequestURL());
+        log.error("ExceptionHandler:{},url:{}", e.getMessage(), request.getRequestURL());
         ApiResponse badRequest = new ApiResponse();
         badRequest.setSubCode(HttpStatus.BAD_REQUEST.value());
         badRequest.setSubMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        log.error(e.getMessage(), e);
+        return badRequest;
+    }
+
+    /**
+     * 捕获全局异常，处理所有不可知的异常
+     */
+    @ExceptionHandler(value= ShiroException.class)
+    public Object shiroException(Exception e, HttpServletRequest request) {
+        log.error("ShiroException:{},url:{}", e.getMessage(), request.getRequestURL());
+        ApiResponse badRequest = new ApiResponse();
+        if(e instanceof AuthorizationException || e instanceof AuthenticationException){
+            badRequest.setSubCode(AdminExceptionEnum.SUBJECT_NOT_HAVE_ROLE_EXCEPTION.getStatus());
+            badRequest.setSubMessage(AdminExceptionEnum.SUBJECT_NOT_HAVE_ROLE_EXCEPTION.getMessage());
+        }
         log.error(e.getMessage(), e);
         return badRequest;
     }
