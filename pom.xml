@@ -20,7 +20,6 @@
         <module>spring-cloud-mybatis</module>
         <module>spring-mybatis-sharding-jdbc</module>
         <module>shiro-web-api</module>
-        <module>vue-web-api</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
