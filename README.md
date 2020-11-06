@@ -40,7 +40,9 @@ Zuul是一种网关服务，提供动态路由、监视、弹性、安全性等�
 首先需要启动服务的注册中心，分别是eureka-server-1、eureka-server-2、eureka-server-3  
 随后启动provider-inner，如果需要负载均衡，需要将inner与outside的配置文件中的application-name改成一样。  
 再启动zuul，zuul中有几个filter，pre、post、route、error、一些filter，
-还有zuul限流配置，超时的配置等。
+还有zuul限流配置，超时的配置等。   
+调用 http://localhost:9096/inner/getUserName  走zuul网关   
+增加了链路跟踪的逻辑
 ### rocketmq
 新增了rocketmq消息发送与处理逻辑
 ### redis-Redisson新增了redis的Redisson的配置和操作   
@@ -50,8 +52,10 @@ Zuul是一种网关服务，提供动态路由、监视、弹性、安全性等�
 ### shardingsphere-jdbc
 增加shardingsphere，分库，分表的操作的配置   
 ### springboot + shiro + jwt + vue
-增加一个前后端分离的后台管理系统，大致就是有用户管理，权限管理等一些基本的功能。   
-首先配置用户，然后配置用户角色，然后角色上面有权限，页面的权限和按钮的权限都在角色里面去配置。   
-系统分为管理员和操作员，不过管理员并不是权限最大的，他们是平级的，所有的权限都应该去配置。   
+前端：vue-web-admin   
+后端：shiro-web-api   
+前后端分离的后台管理系统，大致就是有用户管理，权限管理等一些基本的功能。   
+首先配置用户，然后配置用户角色，然后角色可以配置权限，页面的权限和按钮的权限都在角色里面去配置。   
+系统分为管理员和操作员与其他，不过管理员并不是权限最大的，他们是平级的，所有的权限都应该去配置。   
 默认密码都是123456   
-增加数据库sql
+增加数据库sql   

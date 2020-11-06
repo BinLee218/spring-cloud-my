@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 /**
  * @author bin.li
  * @date 2020/8/25
+ * 后置filter
  */
 @Slf4j
 public class JwtPostFilter extends ZuulFilter {

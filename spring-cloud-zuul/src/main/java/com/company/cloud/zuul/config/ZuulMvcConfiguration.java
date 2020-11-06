@@ -29,12 +29,5 @@ public class ZuulMvcConfiguration extends WebMvcConfigurationSupport {
         addDefaultHttpMessageConverters(converters);
 
     }
-
-    @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.favorPathExtension(false);
-    }
-
-
 }
 

@@ -8,3 +8,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8763/eureka/,http://localhost:8762/eureka/,http://localhost:8761/eureka/
+
+logging:
+  config: classpath:logging-config.xml
+#  pattern:
+#    console: "%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"

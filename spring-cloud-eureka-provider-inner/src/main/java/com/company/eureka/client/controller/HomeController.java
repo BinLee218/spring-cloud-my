@@ -1,6 +1,9 @@
 package com.company.eureka.client.controller;
 
+import com.company.eureka.client.service.TestService;
+import com.company.eureka.client.trace.TraceUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author bin.li
@@ -19,24 +24,28 @@ public class HomeController {
 
     @Autowired
     private DiscoveryClient client;
+    @Autowired
+    private TestService testService;
 
     @RequestMapping(value = "/home")
-    public String home(){
+    public String home() {
         log.info("我是/home");
         return client.toString();
     }
 
     @RequestMapping(value = "/api/home")
-    public String apihome(){
+    public String apihome() {
         log.info("我是/api/home");
         return client.toString();
     }
 
     @PostMapping(value = "/getUserName")
     @ResponseBody
-    public String getUserName(@RequestBody UserRequest userRequest){
-        log.info("我是client");
-        return "用户名："+userRequest.getName();
+    public String getUserName(@RequestBody UserRequest userRequest, HttpServletRequest request) {
+        String s = TraceUtils.ttl.get();
+        log.info("我是client:" + s);
+        testService.test1();
+        return "用户名：" + userRequest.getName();
     }
 
     @RequestMapping(value = "/timeout")
@@ -47,9 +56,9 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/throwException")
-    public String throwException(){
+    public String throwException() {
         log.info("我是=throwException");
-        int i = 1/0;
+        int i = 1 / 0;
         return client.toString();
     }
 }

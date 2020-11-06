@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author bin.li
  * @date 2020/8/19
@@ -34,8 +36,9 @@ public class HomeController {
 
     @PostMapping(value = "/getUserName")
     @ResponseBody
-    public String getUserName(@RequestBody UserRequest userRequest){
+    public String getUserName(@RequestBody UserRequest userRequest, HttpServletRequest request){
         log.info("我是client1");
+        System.out.println(request.getHeader("TraceId"));
         return "用户名："+userRequest.getName();
     }
 

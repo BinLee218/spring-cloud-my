@@ -97,7 +97,7 @@ hystrix:
         isolation:
           thread:
             #配置HystrixCommand执行的超时时间，执行超过该时间会进行服务降级处理
-            timeoutInMilliseconds: 1000
+            timeoutInMilliseconds: 4000
             #Thread | Semaphore
           strategy: Thread
         #禁止掉Hytrix 的超时时间

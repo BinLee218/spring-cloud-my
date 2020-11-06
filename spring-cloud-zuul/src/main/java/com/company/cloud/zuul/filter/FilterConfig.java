@@ -15,8 +15,8 @@ public class FilterConfig {
         return new TokenFilter();
     }
     @Bean
-    public JwtPreFilter jwtPreFilter(){
-        return new JwtPreFilter();
+    public TracePreFilter jwtPreFilter(){
+        return new TracePreFilter();
     }
     @Bean
     public JwtPostFilter jwtPostFilter(){

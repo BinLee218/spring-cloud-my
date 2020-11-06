@@ -54,16 +54,15 @@ public class TokenFilter extends ZuulFilter {
             log.info("header-value:"+header.getValue());
         }
         //获取请求的参数
-        String token = request.getParameter("token");
-        if (StringUtils.isNotBlank(token)) {
-            ctx.setSendZuulResponse(true);
-            ctx.setResponseStatusCode(200);
-            return null;
-        } else {
-            ctx.setSendZuulResponse(false);
-            ctx.setResponseStatusCode(400);
-            ctx.setResponseBody("token is empty");
-            return null;
-        }
+//        String token = request.getParameter("token");
+//        if (StringUtils.isNotBlank(token)) {
+//            ctx.setSendZuulResponse(true);
+//            ctx.setResponseStatusCode(200);
+//        } else {
+//            ctx.setSendZuulResponse(false);
+//            ctx.setResponseStatusCode(400);
+//            ctx.setResponseBody("token is empty");
+//        }
+        return null;
     }
 }

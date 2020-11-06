@@ -1,6 +1,7 @@
 package com.company.mybatis.config;
 
 
+import com.company.mybatis.interceptor.LoggerStackInterceptor;
 import com.company.mybatis.interceptor.ShiroSubjectInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -28,6 +29,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new ShiroSubjectInterceptor()).excludePathPatterns("/api/user/login");
+        registry.addInterceptor(new LoggerStackInterceptor()).addPathPatterns("/**");
     }
 }
 

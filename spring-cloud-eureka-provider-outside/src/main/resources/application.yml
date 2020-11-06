@@ -1,6 +1,7 @@
 spring:
   application:
-    name: erueka-provider-outside
+#    name: erueka-provider-outside
+    name: erueka-provider-inner
 server:
   port: 9092
 

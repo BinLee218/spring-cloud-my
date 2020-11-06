@@ -38,6 +38,7 @@ logging:
     druid:
       sql:
         Statement: debug
+
 #logging:
 #  level:
 #    com.baomidou.mybatisplus.samples: debug
