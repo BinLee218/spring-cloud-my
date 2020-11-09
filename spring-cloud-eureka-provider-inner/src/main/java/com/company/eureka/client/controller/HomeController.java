@@ -1,9 +1,8 @@
 package com.company.eureka.client.controller;
 
 import com.company.eureka.client.service.TestService;
-import com.company.eureka.client.trace.TraceUtils;
+import com.company.eureka.client.common.LogUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2020/8/19
  */
 @RestController
-@Slf4j
 public class HomeController {
 
     @Autowired
@@ -29,35 +27,35 @@ public class HomeController {
 
     @RequestMapping(value = "/home")
     public String home() {
-        log.info("我是/home");
+        LogUtil.info("我是/home");
         return client.toString();
     }
 
     @RequestMapping(value = "/api/home")
     public String apihome() {
-        log.info("我是/api/home");
+        LogUtil.info("我是/api/home");
         return client.toString();
     }
 
     @PostMapping(value = "/getUserName")
     @ResponseBody
     public String getUserName(@RequestBody UserRequest userRequest, HttpServletRequest request) {
-        String s = TraceUtils.ttl.get();
-        log.info("我是client:" + s);
+        String s = LogUtil.ttl.get();
+        LogUtil.info("我是client:" + s);
         testService.test1();
         return "用户名：" + userRequest.getName();
     }
 
     @RequestMapping(value = "/timeout")
     public String timeout() throws InterruptedException {
-        log.info("我是=timeout");
+        LogUtil.info("我是=timeout");
         Thread.sleep(10000);
         return client.toString();
     }
 
     @RequestMapping(value = "/throwException")
     public String throwException() {
-        log.info("我是=throwException");
+        LogUtil.info("我是=throwException");
         int i = 1 / 0;
         return client.toString();
     }

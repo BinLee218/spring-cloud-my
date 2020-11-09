@@ -11,17 +11,17 @@ import java.util.concurrent.TimeUnit;
  * @author bin.li
  * @date 2020/11/6
  */
-public class ExecuteUtils {
+public class ExecuteUtil {
 
-    private ExecuteUtils() {
+    private ExecuteUtil() {
     }
 
     private static final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
-            1,
-            2,
+            10,
+            10,
             10000,
             TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue(1),
+            new ArrayBlockingQueue(10),
             (r, executor) -> System.out.println("rejectedExecution"));
 
     public static ExecutorService getTtlExecutorService() {
