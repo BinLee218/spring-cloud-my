@@ -1,0 +1,42 @@
+server:
+  port: 10000
+spring:
+  application:
+    name: dubbo-provider
+logging:
+  level:
+    root: info
+    druid:
+      sql:
+        Statement: debug
+dubbo:
+  registry:
+    address: zookeeper://127.0.0.1:2181
+  application:
+    name: dubbo-provider
+  protocols:
+    dubbo:
+      name: dubbo
+      port: -1
+      server: netty
+    rest:
+      name: rest
+      port: 9090
+      server: netty
+#      extension: com.company.dubbo.api.filter.RestFilter
+#    rmi:
+#      name: rmi
+#      port: 1099
+#    hessian:
+#      name: hessian
+#      port: 9998
+#      server: jetty
+#    http:
+#      name: http
+#      port: 9997
+#      server: servlet
+#    thrift:
+#      name: thrift
+#      port: 3030
+  config:
+    multiple: true

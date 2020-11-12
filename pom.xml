@@ -20,6 +20,8 @@
         <module>spring-cloud-mybatis</module>
         <module>spring-mybatis-sharding-jdbc</module>
         <module>shiro-web-api</module>
+        <module>spring-cloud-dubbo-provider</module>
+        <module>spring-cloud-dubbo-consumer</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -186,6 +188,47 @@
                 <artifactId>transmittable-thread-local</artifactId>
                 <version>2.11.5</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-spring-boot-starter -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>2.7.8</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-rpc-rest -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-rpc-rest</artifactId>
+                <version>2.7.8</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.curator/curator-framework -->
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-framework</artifactId>
+                <version>5.1.0</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.curator/curator-recipes -->
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>5.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.caucho</groupId>
+                <artifactId>hessian</artifactId>
+                <version>4.0.7</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.thrift/libthrift -->
+            <dependency>
+                <groupId>org.apache.thrift</groupId>
+                <artifactId>libthrift</artifactId>
+                <version>0.13.0</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>javax.ws.rs-api</artifactId>
+                <version>2.1.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -197,20 +240,20 @@
             </plugin>
         </plugins>
     </build>
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            &lt;!&ndash; Maven 自带的中央仓库使用的Id为central 如果其他的仓库声明也是用该Id-->
-<!--            就会覆盖中央仓库的配置 &ndash;&gt;-->
-<!--            <id>aliyunmaven</id>-->
-<!--            <name>阿里云公共仓库</name>-->
-<!--            <url>https://maven.aliyun.com/repository/public</url>-->
-<!--            <layout>default</layout>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <repositories>
+        <repository>
+            <!-- Maven 自带的中央仓库使用的Id为central 如果其他的仓库声明也是用该Id
+            就会覆盖中央仓库的配置 -->
+            <id>aliyunmaven</id>
+            <name>阿里云公共仓库</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>
