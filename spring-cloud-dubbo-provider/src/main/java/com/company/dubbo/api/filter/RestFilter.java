@@ -13,5 +13,6 @@ public class RestFilter implements ContainerResponseFilter {
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
         responseContext.getHeaders().add("dubbo-test", "dubbo-test");
+        System.out.println("RestFilter");
     }
 }

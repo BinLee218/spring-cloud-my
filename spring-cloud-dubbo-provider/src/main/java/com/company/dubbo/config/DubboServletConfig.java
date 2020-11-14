@@ -16,10 +16,10 @@ public class DubboServletConfig implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        servletContext.addListener(BootstrapListener.class);
-        DispatcherServlet dispatcherServlet = new DispatcherServlet();
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", dispatcherServlet);
-        dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/users/*");
+//        servletContext.addListener(BootstrapListener.class);
+//        DispatcherServlet dispatcherServlet = new DispatcherServlet();
+//        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", dispatcherServlet);
+//        dispatcher.setLoadOnStartup(1);
+//        dispatcher.addMapping("/users/*");
     }
 }

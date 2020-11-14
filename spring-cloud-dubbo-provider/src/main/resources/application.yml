@@ -23,14 +23,14 @@ dubbo:
       name: rest
       port: 9090
       server: netty
-#      extension: com.company.dubbo.api.filter.RestFilter
+      extension: com.company.dubbo.api.filter.RestFilter
 #    rmi:
 #      name: rmi
 #      port: 1099
-#    hessian:
-#      name: hessian
-#      port: 9998
-#      server: jetty
+    hessian:
+      name: hessian
+      port: 9998
+      server: jetty
 #    http:
 #      name: http
 #      port: 9997

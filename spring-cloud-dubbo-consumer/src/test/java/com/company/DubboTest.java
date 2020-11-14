@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
+
 /**
  * @author bin.li
  * @date 2020/11/10
@@ -32,5 +34,23 @@ public class DubboTest {
     public void test2(){
         User user = userManagerService.getRestUser();
         System.out.println(user);
+    }
+
+    @Test
+    public void test3(){
+        String user = userManagerService.getHessian();
+        System.out.println(user);
+    }
+
+    @Test
+    public void test4(){
+        User user = userManagerService.getHessianUser("你好");
+        System.out.println(user.toString());
+    }
+
+    @Test
+    public void test5(){
+        Boolean bol = userManagerService.upload(new File("/Users/bin.li/Desktop/1.txt"));
+        System.out.println(bol);
     }
 }

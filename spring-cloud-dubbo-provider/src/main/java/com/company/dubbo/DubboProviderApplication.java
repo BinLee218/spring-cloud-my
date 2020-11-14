@@ -13,7 +13,7 @@ public class DubboProviderApplication {
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(DubboProviderApplication.class)
 				.properties()
-				.web(WebApplicationType.NONE)
+//				.web(WebApplicationType.NONE)
 				.run(args);
 	}
 }
