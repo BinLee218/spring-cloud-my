@@ -50,7 +50,7 @@ public class DubboTest {
 
     @Test
     public void test5(){
-        Boolean bol = userManagerService.upload(new File("/Users/bin.li/Desktop/1.txt"));
+        Boolean bol = userManagerService.upload(new File("/Users/bin.li/application/README"));
         System.out.println(bol);
     }
 }

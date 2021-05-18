@@ -38,7 +38,7 @@ public class HessianServiceImpl implements HessianService {
     @Override
     public Boolean uploanFile(byte[] fileByte) {
         try {
-            FileUtils.writeByteArrayToFile(new File("/Users/bin.li/Desktop/dubboFile.txt"), fileByte);
+            FileUtils.writeByteArrayToFile(new File("/Users/bin.li/Desktop/dubboFile"), fileByte);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
